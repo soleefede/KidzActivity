@@ -43,7 +43,8 @@ public class UserHttpInterface extends HttpInterface{
                     null,
                     json.getString("username"),
                     json.getString("password"),
-                    json.getString("email")
+                    json.getString("email"),
+                    json.getInt("riderBalance")
             );
             UserManager.getInstance().createUser(newuser);
             return new AppResponse("Insert Successful");
@@ -54,11 +55,38 @@ public class UserHttpInterface extends HttpInterface{
 
     }
 
-
-
+    //Sorting: http://localhost:8080/api/users?sortby=riderBalance
+    //Pagination: http://localhost:8080/api/users?offset=1&count=2
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public AppResponse getUsers(@Context HttpHeaders headers){
+    public AppResponse getUsers(@Context HttpHeaders headers, @QueryParam("sortby") String sortby, @QueryParam("offset") Integer offset,
+                                @QueryParam("count") Integer count){
+        try{
+            AppLogger.info("Got an API call");
+            ArrayList<User> users = null;
+
+            if(sortby != null)
+                users = UserManager.getInstance().getUserListSorted(sortby);
+            else if(offset != null && count != null)
+                users = UserManager.getInstance().getUserListPaginated(offset, count);
+            else
+                users = UserManager.getInstance().getUserList();
+
+            if(users != null)
+                return new AppResponse(users);
+            else
+                throw new HttpBadRequestException(0, "Problem with getting users");
+        }catch (Exception e){
+            throw handleException("GET /users", e);
+        }
+    }
+
+
+    /*
+  //http://server.com/api/users?begin=11&count=10
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public AppResponse getUsersPaginated(@Context HttpHeaders headers){
 
         try{
             AppLogger.info("Got an API call");
@@ -71,9 +99,7 @@ public class UserHttpInterface extends HttpInterface{
         }catch (Exception e){
             throw handleException("GET /users", e);
         }
-
-
-    }
+    }*/
 
     @GET
     @Path("/{userId}")
@@ -110,7 +136,8 @@ public class UserHttpInterface extends HttpInterface{
                     userId,
                     json.getString("username"),
                     json.getString("password"),
-                    json.getString("email")
+                    json.getString("email"),
+                    json.getInt("riderBalance")
             );
 
             UserManager.getInstance().updateUser(user);
