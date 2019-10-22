@@ -105,7 +105,8 @@ public class UserManager extends Manager {
             throw handleException("Get User List", e);
         }
     }
-
+    //1 and -1
+    //2 parameters: 1st sorted and 2nd sorted
     public ArrayList<User> getUserListSorted(String sortby) throws AppException {
         try{
             ArrayList<User> userList = new ArrayList<>();
@@ -128,6 +129,7 @@ public class UserManager extends Manager {
         }
     }
 
+    //offset: where to pick up the list, count: how many items are displayed. -> add count to the offset to move to the next page.
     public ArrayList<User> getUserListPaginated(Integer offset, Integer count) throws AppException {
         try{
             ArrayList<User> userList = new ArrayList<>();

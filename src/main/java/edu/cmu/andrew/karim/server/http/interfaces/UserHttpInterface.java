@@ -57,6 +57,7 @@ public class UserHttpInterface extends HttpInterface{
 
     //Sorting: http://localhost:8080/api/users?sortby=riderBalance
     //Pagination: http://localhost:8080/api/users?offset=1&count=2
+    //Sorting and Pagination are in the same function.
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public AppResponse getUsers(@Context HttpHeaders headers, @QueryParam("sortby") String sortby, @QueryParam("offset") Integer offset,
