@@ -3,6 +3,7 @@ package edu.cmu.andrew.karim.server.models;
 public class ActivityProvider {
 
     String id = null;
+    String activityProviderId = null;
     String businessName = null;
     String entityName = null;
     String einNumber = null;
@@ -13,23 +14,25 @@ public class ActivityProvider {
     String state = null;
     String phoneNumber = null;
     String email = null;
-    String comissionPercentage = null;
+    String commissionPercentage = null;
     String bankName = null;
     String bankAccNumber = null;
     String pinCode = null;
 
-    public ActivityProvider(String id, String businessName, String entityName, String einNumber, String ssn, String address1, String city, String state, String phoneNumber, String email, String comissionPercentage, String bankName, String bankAccNumber, String pinCode) {
+    public ActivityProvider(String id, String activityProviderId, String businessName, String entityName, String einNumber, String ssn, String address1, String address2, String city, String state, String phoneNumber, String email, String commissionPercentage, String bankName, String bankAccNumber, String pinCode) {
         this.id = id;
+        this.activityProviderId = activityProviderId;
         this.businessName = businessName;
         this.entityName = entityName;
         this.einNumber = einNumber;
         this.ssn = ssn;
         this.address1 = address1;
+        this.address2 = address2;
         this.city = city;
         this.state = state;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.comissionPercentage = comissionPercentage;
+        this.commissionPercentage = commissionPercentage;
         this.bankName = bankName;
         this.bankAccNumber = bankAccNumber;
         this.pinCode = pinCode;
@@ -41,6 +44,14 @@ public class ActivityProvider {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getActivityProviderId() {
+        return activityProviderId;
+    }
+
+    public void setActivityProviderId(String activityProviderId) {
+        this.activityProviderId = activityProviderId;
     }
 
     public String getBusinessName() {
@@ -123,12 +134,12 @@ public class ActivityProvider {
         this.email = email;
     }
 
-    public String getComissionPercentage() {
-        return comissionPercentage;
+    public String getCommissionPercentage() {
+        return commissionPercentage;
     }
 
-    public void setComissionPercentage(String comissionPercentage) {
-        this.comissionPercentage = comissionPercentage;
+    public void setCommissionPercentage(String commissionPercentage) {
+        this.commissionPercentage = commissionPercentage;
     }
 
     public String getBankName() {

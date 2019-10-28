@@ -174,5 +174,4 @@ public class UserManager extends Manager {
         }
     }
 
-
 }
