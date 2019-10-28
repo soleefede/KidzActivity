@@ -186,7 +186,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                 if(i==7) {
                     ActivityProvider newactivityprovider = new ActivityProvider(
                             null,
-                            "1",
+                            "7",
                             "Michael Levine",
                             "Sunny's Surplus",
                             "21-9261234",

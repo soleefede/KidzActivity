@@ -70,7 +70,7 @@ public class ActivityProviderManager extends Manager{
     public void updateActivityProvider(ActivityProvider activityProvider) throws AppException {
         try {
 
-            Bson filter = new Document("_id", new ObjectId(activityProvider.getId()));
+            Bson filter = new Document("activityProviderId", new String(activityProvider.getActivityProviderId()));
             Bson newValue = new Document()
                     .append("activityProviderId", activityProvider.getActivityProviderId())
                     .append("businessName", activityProvider.getBusinessName())
@@ -101,7 +101,7 @@ public class ActivityProviderManager extends Manager{
 
     public void deleteActivityProvider(String activityProviderId) throws AppException {
         try {
-            Bson filter = new Document("_id", new ObjectId(activityProviderId));
+            Bson filter = new Document("activityProviderId", activityProviderId);
             activityProviderCollection.deleteOne(filter);
         }catch (Exception e){
             throw handleException("Delete Activity provider", e);
@@ -246,7 +246,7 @@ public class ActivityProviderManager extends Manager{
             ArrayList<ActivityProvider> activityProviderList = new ArrayList<>();
             FindIterable<Document> activityProviderDocs = activityProviderCollection.find();
             for(Document activityProviderDoc: activityProviderDocs) {
-                if(activityProviderDoc.getObjectId("activityProviderId").toString().equals(activityProviderId)) {
+                if(activityProviderDoc.getString("activityProviderId").toString().equals(activityProviderId)) {
                     ActivityProvider activityProvider = new ActivityProvider(
                             activityProviderDoc.getObjectId("_id").toString(),
                             activityProviderDoc.getString("activityProviderId"),

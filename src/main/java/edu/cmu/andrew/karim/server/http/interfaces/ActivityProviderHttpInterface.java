@@ -124,7 +124,7 @@ public class ActivityProviderHttpInterface extends HttpInterface{
             ArrayList<ActivityProvider> activityProviders = ActivityProviderManager.getInstance().getActivityProviderById(activityProviderId);
 
             if(activityProviders != null)
-                return new AppResponse(activityProviderId);
+                return new AppResponse(activityProviders);
             else
                 throw new HttpBadRequestException(0, "Problem with getting Activity providers");
         }catch (Exception e){
