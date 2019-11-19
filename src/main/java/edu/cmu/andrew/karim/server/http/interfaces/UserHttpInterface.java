@@ -43,8 +43,8 @@ public class UserHttpInterface extends HttpInterface{
                     null,
                     json.getString("username"),
                     json.getString("password"),
-                    json.getString("email"),
-                    json.getInt("riderBalance")
+                    json.getString("email")
+                 //   , json.getInt("riderBalance")
             );
             UserManager.getInstance().createUser(newuser);
             return new AppResponse("Insert Successful");
@@ -127,7 +127,7 @@ public class UserHttpInterface extends HttpInterface{
     @Path("/{userId}")
     @Consumes({ MediaType.APPLICATION_JSON})
     @Produces({ MediaType.APPLICATION_JSON})
-    public AppResponse patchUsers(Object request, @PathParam("userId") String userId){
+    public AppResponse patchUsers(@Context HttpHeaders headers,Object request, @PathParam("userId") String userId){
 
         JSONObject json = null;
 
@@ -137,11 +137,11 @@ public class UserHttpInterface extends HttpInterface{
                     userId,
                     json.getString("username"),
                     json.getString("password"),
-                    json.getString("email"),
-                    json.getInt("riderBalance")
+                    json.getString("email")
+                 //   , json.getInt("riderBalance")
             );
 
-            UserManager.getInstance().updateUser(user);
+            UserManager.getInstance().updateUser(headers,user);
 
         }catch (Exception e){
             throw handleException("PATCH users/{userId}", e);
