@@ -8,7 +8,9 @@ import com.mongodb.client.model.Updates;
 import edu.cmu.andrew.karim.server.exceptions.AppException;
 import edu.cmu.andrew.karim.server.exceptions.AppInternalServerException;
 import edu.cmu.andrew.karim.server.models.Ranking;
+import edu.cmu.andrew.karim.server.models.Booking;
 import edu.cmu.andrew.karim.server.models.Activity;
+import edu.cmu.andrew.karim.server.models.Review;
 import edu.cmu.andrew.karim.server.utils.MongoPool;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -20,14 +22,20 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import static com.mongodb.client.model.Filters.eq;
+
 public class RankingManager extends Manager{
 
     public static RankingManager _self;
     private MongoCollection<Document> activityCollection;
+    private MongoCollection<Document> bookingCollection;
+    private MongoCollection<Document> reviewCollection;
 
 
     public RankingManager() {
         this.activityCollection = MongoPool.getInstance().getCollection("activity");
+        this.bookingCollection = MongoPool.getInstance().getCollection("booking");
+        this.reviewCollection = MongoPool.getInstance().getCollection("review");
     }
 
     public static RankingManager getInstance(){
@@ -56,6 +64,27 @@ public class RankingManager extends Manager{
                         rankingDoc.getString("publishStatus")
                 );
                 rankingList.add(ranking);
+                String activityId = rankingDoc.getString("activityId").toString();
+
+                int sumRatings = 0;
+                int countRatings = 0;
+                int avgRatings = 0;
+
+                FindIterable<Document> bookingDocs = bookingCollection.find(eq("activityId", activityId));
+                for(Document bookingDoc: bookingDocs){
+                    String bookingId = bookingDoc.getString("bookingId").toString();
+                    FindIterable<Document> reviewDocs = reviewCollection.find(eq("bookingId", bookingId));
+                    for(Document reviewDoc: reviewDocs){
+                        int ratings = Integer.parseInt(reviewDoc.get("ratings").toString());
+                        sumRatings += ratings;
+                        countRatings++;
+                    }
+                }
+                avgRatings = sumRatings/countRatings;
+
+                //Post aveRatings back.
+
+
             }
             return new ArrayList<>(rankingList);
         } catch(Exception e){

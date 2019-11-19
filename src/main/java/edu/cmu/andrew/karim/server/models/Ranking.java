@@ -13,6 +13,7 @@ public class Ranking {
     double price;
     String currency;
     String publishStatus;
+    double aveReview;
 
     public Ranking(String activityId, String activityName, String activityProviderId, String effectiveDate, String endDate, String activityCategory, String description, String photo, double price, String currency, String publishStatus) {
         this.activityId = activityId;
@@ -26,7 +27,16 @@ public class Ranking {
         this.price = price;
         this.currency = currency;
         this.publishStatus = publishStatus;
+        //this.aveReview = aveReview;
     }
+
+//    public double getAveReview() {
+//        return aveReview;
+//    }
+//
+//    public void setAveReview(double aveReview) {
+//        this.aveReview = aveReview;
+//    }
 
     public String getActivityId() {
         return activityId;
