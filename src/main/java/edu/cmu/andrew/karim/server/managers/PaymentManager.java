@@ -63,12 +63,10 @@ public class PaymentManager extends Manager {
                 Bson newValue = new Document()
                         .append("paymentId", paymentId)
                         .append("noOfSeats", paymentDoc.getInteger("noOfSeats"))
-
                         .append("activityPrice", paymentDoc.getDouble("activityPrice"))
                         .append("totalPrice", paymentDoc.getDouble("totalPrice"))
                         .append("paymentIdExternal", paymentDoc.getString("paymentIdExternal"))
-                        .append("paymentStatus", paymentDoc.getString("paymentStatus"))
-                       ;
+                        .append("paymentStatus", paymentDoc.getString("paymentStatus"));
 
 
 

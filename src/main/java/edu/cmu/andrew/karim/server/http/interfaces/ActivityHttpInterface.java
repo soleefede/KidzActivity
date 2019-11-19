@@ -7,9 +7,7 @@ import edu.cmu.andrew.karim.server.http.responses.AppResponse;
 import edu.cmu.andrew.karim.server.http.utils.PATCH;
 import edu.cmu.andrew.karim.server.managers.ActivityManager;
 import edu.cmu.andrew.karim.server.models.Activity;
-import edu.cmu.andrew.karim.server.models.User;
-import edu.cmu.andrew.karim.server.managers.UserManager;
-import edu.cmu.andrew.karim.server.utils.*;
+import edu.cmu.andrew.karim.server.utils.AppLogger;
 import org.bson.Document;
 import org.json.JSONObject;
 
@@ -50,7 +48,8 @@ public class ActivityHttpInterface extends HttpInterface {
                     json.getString("photo"),
                     json.getDouble("price"),
                     json.getString("currency"),
-                    json.getString("publishStatus")
+                    json.getString("publishStatus"),
+                    ""
                     );
             ActivityManager.getInstance().createActivity(newactivity);
             return new AppResponse("Insert Successful");
@@ -129,7 +128,8 @@ public class ActivityHttpInterface extends HttpInterface {
                     json.getString("photo"),
                     json.getDouble("price"),
                     json.getString("currency"),
-                    json.getString("publishStatus")
+                    json.getString("publishStatus"),
+                    json.getString("avgrating")
             );
 
             ActivityManager.getInstance().updateActivity(activity);
