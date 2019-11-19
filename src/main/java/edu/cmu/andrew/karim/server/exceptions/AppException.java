@@ -27,7 +27,8 @@ public class AppException extends Exception{
     public AppException(int type, int errorCode) {
         this.type = type;
         this.errorCode = errorCode;
-        this.errorMessage = "Some message";
+        this.errorMessage = "Check for the validity of the parameters and request";
+
 
     }
 
