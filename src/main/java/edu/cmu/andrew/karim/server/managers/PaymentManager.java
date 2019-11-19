@@ -26,12 +26,6 @@ public class PaymentManager extends Manager {
         return _self;
     }
 
-    String paymentId;
-    int noOfSeats;
-    float activityPrice;
-    float totalPrice;
-    String paymentIdExternal;
-    String paymentStatus;
 
     public void createPayment(Payment payment) throws AppException {
 

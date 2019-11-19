@@ -28,12 +28,7 @@ public class PaymentHttpInterface extends HttpInterface {
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public AppResponse postPayment(Object request) {
-        String paymentId;
-        int noOfSeats;
-        float activityPrice;
-        float totalPrice;
-        String paymentIdExternal;
-        String paymentStatus;
+
         try {
             JSONObject json = null;
             json = new JSONObject(ow.writeValueAsString(request));
