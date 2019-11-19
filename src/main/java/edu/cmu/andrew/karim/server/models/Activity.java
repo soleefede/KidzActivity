@@ -9,13 +9,17 @@ public class Activity {
     String  endDate  =null;
     String activityCategory =null;
     String description =null;
+    //int ageLowerLimit ;
+    //int ageUpperLimit;
     String photo;
     double price;
     String currency;
     String publishStatus;
+    String avgRating;
 
     public Activity(String activityId, String activityName, String activityProviderId, String effectiveDate,
-                    String endDate, String activityCategory, String description, String photo, double price, String currency ,String publishStatus) {
+                    String endDate, String activityCategory, String description, String photo, double price, String currency ,String publishStatus
+                    ,String avgRating) {
         this.activityId = activityId;
         this.activityName = activityName;
         this.activityProviderId = activityProviderId;
@@ -27,6 +31,7 @@ public class Activity {
         this.price = price;
         this.currency = currency;
         this.publishStatus = publishStatus;
+        this.avgRating = "3";
     }
 
     public  Activity changeActivity(String activityId, String activityName, String activityProviderId, String effectiveDate,
@@ -134,5 +139,13 @@ public class Activity {
 
     public void setPublishStatus(String publishStatus) {
         this.publishStatus = publishStatus;
+    }
+
+    public String getAvgRating() {
+        return avgRating;
+    }
+
+    public void setAvgRating(String avgRating) {
+        this.avgRating = avgRating;
     }
 }

@@ -3,18 +3,14 @@ package edu.cmu.andrew.karim.server.managers;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.*;
-import com.mongodb.client.model.Sorts;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 import edu.cmu.andrew.karim.server.exceptions.AppException;
 import edu.cmu.andrew.karim.server.exceptions.AppInternalServerException;
 import edu.cmu.andrew.karim.server.models.Activity;
-import edu.cmu.andrew.karim.server.models.User;
 import edu.cmu.andrew.karim.server.utils.MongoPool;
-import edu.cmu.andrew.karim.server.utils.AppLogger;
-import org.bson.BSON;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import org.bson.types.ObjectId;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
@@ -83,7 +79,8 @@ public class ActivityManager extends Manager {
                         activityDoc.getString("photo"),
                         activityDoc.getDouble("price"),
                         activityDoc.getString("currency"),
-                        activityDoc.getString("publishStatus")
+                        activityDoc.getString("publishStatus"),
+                        activityDoc.getString("avgRating")
                 );
                 activityList.add(activity);
             }
@@ -111,7 +108,8 @@ public class ActivityManager extends Manager {
                         activityDoc.getString("photo"),
                         activityDoc.getDouble("price"),
                         activityDoc.getString("currency"),
-                        activityDoc.getString("publishStatus")
+                        activityDoc.getString("publishStatus"),
+                        activityDoc.getString("avgRating")
                 );
                 activityList.add(activity);
             }
@@ -139,7 +137,8 @@ public class ActivityManager extends Manager {
                         activityDoc.getString("photo"),
                         activityDoc.getDouble("price"),
                         activityDoc.getString("currency"),
-                        activityDoc.getString("publishStatus")
+                        activityDoc.getString("publishStatus"),
+                        activityDoc.getString("avgRating")
                 );
                 activityList.add(activity);
             }
@@ -170,7 +169,8 @@ public class ActivityManager extends Manager {
                         activityDoc.getString("photo"),
                         activityDoc.getDouble("price"),
                         activityDoc.getString("currency"),
-                        activityDoc.getString("publishStatus")
+                        activityDoc.getString("publishStatus"),
+                        activityDoc.getString("avgRating")
                 );
                 activityList.add(activity);
             }
@@ -197,7 +197,7 @@ public class ActivityManager extends Manager {
                             activityDoc.getString("photo"),
                             activityDoc.getDouble("price"),
                             activityDoc.getString("currency"),
-                            activityDoc.getString("publishStatus")
+                            activityDoc.getString("publishStatus"),""
                     );
                     activityList.add(activity);
                 }
@@ -223,7 +223,8 @@ public class ActivityManager extends Manager {
                     .append("photo",activity.getPhoto())
                     .append("price",activity.getPrice())
                     .append("currency",activity.getCurrency())
-                    .append("publishStatus",activity.getPublishStatus());
+                    .append("publishStatus",activity.getPublishStatus())
+                    .append("avgRating" , activity.getAvgRating());
 
             Bson updateOperationDocument = new Document("$set", newValue);
 
