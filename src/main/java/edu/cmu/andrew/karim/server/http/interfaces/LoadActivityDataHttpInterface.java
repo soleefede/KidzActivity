@@ -3,18 +3,19 @@ package edu.cmu.andrew.karim.server.http.interfaces;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.mongodb.client.MongoCollection;
-import edu.cmu.andrew.karim.server.http.exceptions.HttpBadRequestException;
+import edu.cmu.andrew.karim.server.exceptions.AppUnauthorizedException;
 import edu.cmu.andrew.karim.server.http.responses.AppResponse;
-import edu.cmu.andrew.karim.server.http.utils.PATCH;
 import edu.cmu.andrew.karim.server.managers.ActivityManager;
-import edu.cmu.andrew.karim.server.models.Activity;
-import edu.cmu.andrew.karim.server.models.User;
+import edu.cmu.andrew.karim.server.managers.SessionManager;
 import edu.cmu.andrew.karim.server.managers.UserManager;
-import edu.cmu.andrew.karim.server.utils.*;
+import edu.cmu.andrew.karim.server.models.Activity;
+import edu.cmu.andrew.karim.server.models.Session;
+import edu.cmu.andrew.karim.server.models.User;
 import org.bson.Document;
-import org.json.JSONObject;
 
-import javax.ws.rs.*;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -31,9 +32,12 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
     @POST
     //@Consumes({MediaType.APPLICATION_JSON})
    @Produces({MediaType.APPLICATION_JSON})
-    public AppResponse postActivity(){
+    public AppResponse postActivity(@Context HttpHeaders headers){
         try{
-
+            Session session = SessionManager.getInstance().getSessionForToken(headers);
+            ArrayList<User> user = UserManager.getInstance().getUserById(session.getUserId());
+            if(!session.getUserId().equals(user.get(0).getId()))
+                throw new AppUnauthorizedException(70,"Invalid user id");
             for (int i = 0; i < 10; i++) {
                 if(i==0) {
                     Activity newactivity = new Activity(
@@ -50,7 +54,7 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "Review",
                             "3"
                     );
-                    ActivityManager.getInstance().createActivity(newactivity);
+                    ActivityManager.getInstance().createActivity(headers,newactivity);
                 }
                 if(i==1) {
                     Activity newactivity = new Activity(
@@ -67,7 +71,7 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "Draft",
                             "3"
                     );
-                    ActivityManager.getInstance().createActivity(newactivity);
+                    ActivityManager.getInstance().createActivity(headers,newactivity);
                 }
 
                 if(i==2) {
@@ -85,7 +89,7 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "Draft",
                             "3"
                     );
-                    ActivityManager.getInstance().createActivity(newactivity);
+                    ActivityManager.getInstance().createActivity(headers,newactivity);
                 }
                 if(i==3) {
                     Activity newactivity = new Activity(
@@ -102,7 +106,7 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "Review",
                             "3"
                     );
-                    ActivityManager.getInstance().createActivity(newactivity);
+                    ActivityManager.getInstance().createActivity(headers,newactivity);
                 }
 
                 if(i==4) {
@@ -120,7 +124,7 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "Publish",
                             "3"
                     );
-                    ActivityManager.getInstance().createActivity(newactivity);
+                    ActivityManager.getInstance().createActivity(headers,newactivity);
                 }
                 if(i==5) {
                     Activity newactivity = new Activity(
@@ -137,7 +141,7 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "Publish",
                             "3"
                     );
-                    ActivityManager.getInstance().createActivity(newactivity);
+                    ActivityManager.getInstance().createActivity(headers,newactivity);
                 }
                 if(i==6) {
                     Activity newactivity = new Activity(
@@ -154,7 +158,7 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "Publish",
                             "3"
                     );
-                    ActivityManager.getInstance().createActivity(newactivity);
+                    ActivityManager.getInstance().createActivity(headers,newactivity);
                 }
                 if(i==7) {
                     Activity newactivity = new Activity(
@@ -171,7 +175,7 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "Publish",
                             "3"
                     );
-                    ActivityManager.getInstance().createActivity(newactivity);
+                    ActivityManager.getInstance().createActivity(headers,newactivity);
                 }
                 if(i==8) {
                     Activity newactivity = new Activity(
@@ -188,7 +192,7 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "Publish",
                             "3"
                     );
-                    ActivityManager.getInstance().createActivity(newactivity);
+                    ActivityManager.getInstance().createActivity(headers,newactivity);
                 }
 
                 if(i==9) {
@@ -206,7 +210,7 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "Draft",
                             "3"
                     );
-                    ActivityManager.getInstance().createActivity(newactivity);
+                    ActivityManager.getInstance().createActivity(headers,newactivity);
                 }
 
             }
