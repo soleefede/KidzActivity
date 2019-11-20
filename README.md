@@ -2,7 +2,7 @@
 Initial commit.
 
 Anita Poulose
-Resouces worked on : 
+Resouces worked on: 
 Login and authentication ( session implemention)
 Activity
 Availability
@@ -14,7 +14,7 @@ https://docs.google.com/document/d/1FxwErmmqCuFWQGo4m3DfJj1bHWXy8raVM09zQAnHm_0/
 
 
 Emily Hsiao 
-Resouces worked on : 
+Resouces worked on: 
 ActivityProvider
 Parent
 Ranking calculation.
