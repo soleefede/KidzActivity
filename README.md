@@ -3,7 +3,7 @@ Initial commit.
 
 Anita Poulose
 Resouces worked on: 
-Login and authentication ( session implemention)
+Login and authentication (session implemention)
 Activity
 Availability
 Booking
