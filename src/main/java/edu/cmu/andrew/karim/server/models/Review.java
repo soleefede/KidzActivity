@@ -13,6 +13,7 @@ public class Review {
         this.reviewId = reviewId;
         this.parentId = parentId;
         this.bookingId = bookingId;
+        this.ratings = ratings;
         this.reviewComments = reviewComments;
 
 

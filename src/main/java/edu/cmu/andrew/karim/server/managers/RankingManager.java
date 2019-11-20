@@ -1,5 +1,6 @@
 package edu.cmu.andrew.karim.server.managers;
 
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -11,6 +12,7 @@ import edu.cmu.andrew.karim.server.models.Ranking;
 import edu.cmu.andrew.karim.server.models.Booking;
 import edu.cmu.andrew.karim.server.models.Activity;
 import edu.cmu.andrew.karim.server.models.Review;
+import edu.cmu.andrew.karim.server.managers.ActivityManager;
 import edu.cmu.andrew.karim.server.utils.MongoPool;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -27,6 +29,7 @@ import static com.mongodb.client.model.Filters.eq;
 public class RankingManager extends Manager{
 
     public static RankingManager _self;
+    private ObjectWriter ow;
     private MongoCollection<Document> activityCollection;
     private MongoCollection<Document> bookingCollection;
     private MongoCollection<Document> reviewCollection;
@@ -64,8 +67,8 @@ public class RankingManager extends Manager{
                         rankingDoc.getString("publishStatus")
                 );
                 rankingList.add(ranking);
-                String activityId = rankingDoc.getString("activityId").toString();
 
+                String activityId = rankingDoc.getString("activityId").toString();
                 int sumRatings = 0;
                 int countRatings = 0;
                 int avgRatings = 0;
@@ -73,109 +76,49 @@ public class RankingManager extends Manager{
                 FindIterable<Document> bookingDocs = bookingCollection.find(eq("activityId", activityId));
                 for(Document bookingDoc: bookingDocs){
                     String bookingId = bookingDoc.getString("bookingId").toString();
-                    FindIterable<Document> reviewDocs = reviewCollection.find(eq("bookingId", bookingId));
-                    for(Document reviewDoc: reviewDocs){
-                        int ratings = Integer.parseInt(reviewDoc.get("ratings").toString());
-                        sumRatings += ratings;
-                        countRatings++;
+                    System.out.println(bookingId);
+                    Document reviewDoc = reviewCollection.find(eq("bookingId", bookingId)).first();
+                    if (reviewDoc!=null) {
+                        sumRatings += Integer.parseInt(reviewDoc.getString("ratings"));
+                       countRatings++;
                     }
                 }
-                avgRatings = sumRatings/countRatings;
-
+                if (countRatings > 0) {
+                    avgRatings = sumRatings / countRatings;
+                }
+                String avgRating = Double.toString(avgRatings);
+                System.out.println(activityId + " " + sumRatings + " " + avgRatings + " " + avgRating);
                 //Post aveRatings back.
+                Bson filter = new Document("activityId", activityId);
+                Document activityDoc = activityCollection.find(eq("activityId", activityId)).first();
+                Bson newValue = new Document()
+                        .append("activityId", activityDoc.getString("activityId"))
+                        .append("activityName", activityDoc.getString("activityName"))
+                        .append("activityProviderId", activityDoc.getString("activityProviderId"))
+                        .append("effectiveDate", activityDoc.getString("effectiveDate"))
+                        .append("endDate", activityDoc.getString("endDate"))
+                        .append("activityCategory", activityDoc.getString("activityCategory"))
+                        .append("description", activityDoc.getString("description"))
+                        .append("photo", activityDoc.getString("photo"))
+                        .append("price", activityDoc.getDouble("price"))
+                        .append("currency", activityDoc.getString("currency"))
+                        .append("publishStatus", activityDoc.getString("publishStatus"))
+                        .append("avgRating" , avgRating);
 
+                System.out.println("Before updating" +  " " + avgRating);
+
+                Bson updateOperationDocument = new Document("$set", newValue);
+                if (newValue != null) {
+                    System.out.println(activityDoc.getString("activityId") + " I am here ");
+                    activityCollection.updateOne(filter, updateOperationDocument);
+                }
+                else
+                    throw new AppInternalServerException(0, "Failed to update average reviews");
 
             }
-            return new ArrayList<>(rankingList);
+            return rankingList;
         } catch(Exception e){
             throw handleException("Get Ranking List", e);
         }
     }
-
-//    public ArrayList<Activity> getActivityListSorted(String sortby) throws AppException {
-//        try{
-//            ArrayList<Activity> activityList = new ArrayList<>();
-//            BasicDBObject sortParams = new BasicDBObject();
-//            sortParams.put(sortby, 1);
-//            FindIterable<Document> activityDocs = activityCollection.find().sort(sortParams);
-//            for(Document activityDoc: activityDocs) {
-//                Activity activity = new Activity(
-//                        activityDoc.getString("activityId").toString(),
-//                        activityDoc.getString("activityName").toString(),
-//                        activityDoc.getString("activityProviderId"),
-//                        activityDoc.getString("effectiveDate"),
-//                        activityDoc.getString("endDate"),
-//                        activityDoc.getString("activityCategory"),
-//                        activityDoc.getString("description"),
-//                        activityDoc.getString("photo"),
-//                        activityDoc.getDouble("price"),
-//                        activityDoc.getString("currency"),
-//                        activityDoc.getString("publishStatus")
-//                );
-//                activityList.add(activity);
-//            }
-//            return new ArrayList<>(activityList);
-//        } catch(Exception e){
-//            throw handleException("Get Activity List", e);
-//        }
-//    }
-//
-//    public ArrayList<Activity> getActivityListFiltered(String activityCategory) throws AppException {
-//        try{
-//            ArrayList<Activity> activityList = new ArrayList<>();
-//            // BasicDBObject filterParams = new BasicDBObject();
-//            //filterParams.put(filterby, 1);
-//            FindIterable<Document> activityDocs = activityCollection.find().filter(Filters.eq("activityCategory",activityCategory));
-//            for(Document activityDoc: activityDocs) {
-//                Activity activity = new Activity(
-//                        activityDoc.getString("activityId").toString(),
-//                        activityDoc.getString("activityName").toString(),
-//                        activityDoc.getString("activityProviderId"),
-//                        activityDoc.getString("effectiveDate"),
-//                        activityDoc.getString("endDate"),
-//                        activityDoc.getString("activityCategory"),
-//                        activityDoc.getString("description"),
-//                        activityDoc.getString("photo"),
-//                        activityDoc.getDouble("price"),
-//                        activityDoc.getString("currency"),
-//                        activityDoc.getString("publishStatus")
-//                );
-//                activityList.add(activity);
-//            }
-//            return new ArrayList<>(activityList);
-//        } catch(Exception e){
-//            throw handleException("Get Activity List", e);
-//        }
-//    }
-//
-//
-//
-//    public ArrayList<Activity> getActivityListPaginated(Integer offset, Integer count) throws AppException {
-//        try{
-//            ArrayList<Activity> activityList = new ArrayList<>();
-//            BasicDBObject sortParams = new BasicDBObject();
-//            sortParams.put("activityId", 1);
-//            // FindIterable<Document> activityDocs = activityCollection.find().sort(sortParams).skip(offset).limit(count);
-//            FindIterable<Document> activityDocs = activityCollection.find().skip(offset).limit(count);
-//            for(Document activityDoc: activityDocs) {
-//                Activity activity = new Activity(
-//                        activityDoc.getString("activityId").toString(),
-//                        activityDoc.getString("activityName").toString(),
-//                        activityDoc.getString("activityProviderId"),
-//                        activityDoc.getString("effectiveDate"),
-//                        activityDoc.getString("endDate"),
-//                        activityDoc.getString("activityCategory"),
-//                        activityDoc.getString("description"),
-//                        activityDoc.getString("photo"),
-//                        activityDoc.getDouble("price"),
-//                        activityDoc.getString("currency"),
-//                        activityDoc.getString("publishStatus")
-//                );
-//                activityList.add(activity);
-//            }
-//            return new ArrayList<>(activityList);
-//        } catch(Exception e){
-//            throw handleException("Get Activity List", e);
-//        }
-//    }
 }

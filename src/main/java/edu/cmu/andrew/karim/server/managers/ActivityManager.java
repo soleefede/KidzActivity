@@ -197,7 +197,8 @@ public class ActivityManager extends Manager {
                             activityDoc.getString("photo"),
                             activityDoc.getDouble("price"),
                             activityDoc.getString("currency"),
-                            activityDoc.getString("publishStatus"),""
+                            activityDoc.getString("publishStatus"),
+                            activityDoc.getString("avgRating")
                     );
                     activityList.add(activity);
                 }

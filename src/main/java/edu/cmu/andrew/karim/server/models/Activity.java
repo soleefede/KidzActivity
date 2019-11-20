@@ -31,7 +31,7 @@ public class Activity {
         this.price = price;
         this.currency = currency;
         this.publishStatus = publishStatus;
-        this.avgRating = "3";
+        this.avgRating = avgRating;
     }
 
     public  Activity changeActivity(String activityId, String activityName, String activityProviderId, String effectiveDate,

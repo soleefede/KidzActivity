@@ -47,7 +47,8 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "crossfit.jpg",
                             150,
                             "USD",
-                            "Review"
+                            "Review",
+                            "3"
                     );
                     ActivityManager.getInstance().createActivity(newactivity);
                 }
@@ -63,7 +64,8 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "dolphin.jpg",
                             100,
                             "USD",
-                            "Draft"
+                            "Draft",
+                            "3"
                     );
                     ActivityManager.getInstance().createActivity(newactivity);
                 }
@@ -80,7 +82,8 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "soccer.jpg",
                             80,
                             "USD",
-                            "Draft"
+                            "Draft",
+                            "3"
                     );
                     ActivityManager.getInstance().createActivity(newactivity);
                 }
@@ -96,7 +99,8 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "colors.jpg",
                             30,
                             "USD",
-                            "Review"
+                            "Review",
+                            "3"
                     );
                     ActivityManager.getInstance().createActivity(newactivity);
                 }
@@ -113,7 +117,8 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "publicSpeaking.jpg",
                             25,
                             "USD",
-                            "Publish"
+                            "Publish",
+                            "3"
                     );
                     ActivityManager.getInstance().createActivity(newactivity);
                 }
@@ -129,7 +134,8 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "numbers.jpg",
                             35,
                             "USD",
-                            "Publish"
+                            "Publish",
+                            "3"
                     );
                     ActivityManager.getInstance().createActivity(newactivity);
                 }
@@ -145,7 +151,8 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "dance.jpg",
                             80,
                             "USD",
-                            "Publish"
+                            "Publish",
+                            "3"
                     );
                     ActivityManager.getInstance().createActivity(newactivity);
                 }
@@ -161,7 +168,8 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "space.jpg",
                             75,
                             "USD",
-                            "Publish"
+                            "Publish",
+                            "3"
                     );
                     ActivityManager.getInstance().createActivity(newactivity);
                 }
@@ -177,7 +185,8 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "oilpaint.jpg",
                             50,
                             "USD",
-                            "Publish"
+                            "Publish",
+                            "3"
                     );
                     ActivityManager.getInstance().createActivity(newactivity);
                 }
@@ -194,7 +203,8 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "space.jpg",
                             60,
                             "USD",
-                            "Draft"
+                            "Draft",
+                            "3"
                     );
                     ActivityManager.getInstance().createActivity(newactivity);
                 }

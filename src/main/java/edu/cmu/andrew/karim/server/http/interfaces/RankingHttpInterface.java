@@ -30,20 +30,11 @@ public class RankingHttpInterface extends HttpInterface {
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public AppResponse getActivity(@Context HttpHeaders headers, @QueryParam("sortby") String sortby, @QueryParam("offset") Integer offset,
-                                   @QueryParam("count") Integer count, @QueryParam("category") String activityCategory ){
+    public AppResponse getActivity(){
         try{
             AppLogger.info("Got an API call");
             ArrayList<Ranking> rankings = null;
-
-//            if(sortby != null)
-//                activities = ActivityManager.getInstance().getActivityListSorted(sortby);
-//            else if (activityCategory != null)
-//                activities = ActivityManager.getInstance().getActivityListFiltered(activityCategory);
-//            else if(offset != null && count != null)
-//                activities = ActivityManager.getInstance().getActivityListPaginated(offset, count);
-//            else
-                rankings  = RankingManager.getInstance().getRankingList();
+            rankings  = RankingManager.getInstance().getRankingList();
 
             if(rankings != null)
                 return new AppResponse(rankings);
