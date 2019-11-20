@@ -7,12 +7,17 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 import edu.cmu.andrew.karim.server.exceptions.AppException;
 import edu.cmu.andrew.karim.server.exceptions.AppInternalServerException;
+import edu.cmu.andrew.karim.server.exceptions.AppUnauthorizedException;
 import edu.cmu.andrew.karim.server.models.Activity;
+import edu.cmu.andrew.karim.server.models.Session;
+import edu.cmu.andrew.karim.server.models.User;
 import edu.cmu.andrew.karim.server.utils.MongoPool;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.json.JSONObject;
 
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,9 +40,14 @@ public class ActivityManager extends Manager {
     }
 
 
-    public void createActivity(Activity activity) throws AppException {
+    public void createActivity(@Context HttpHeaders headers,Activity activity) throws AppException {
 
         try{
+            Session session = SessionManager.getInstance().getSessionForToken(headers);
+            ArrayList<User> user = UserManager.getInstance().getUserById(session.getUserId());
+            if(!session.getUserId().equals(user.get(0).getId()))
+                throw new AppUnauthorizedException(70,"Invalid user id");
+
             JSONObject json = new JSONObject(activity);
 
             Document newDoc = new Document()

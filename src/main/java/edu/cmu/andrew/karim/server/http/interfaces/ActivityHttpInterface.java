@@ -31,7 +31,7 @@ public class ActivityHttpInterface extends HttpInterface {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public AppResponse postActivity(Object request){
+    public AppResponse postActivity(@Context HttpHeaders headers,Object request){
 
         try{
             JSONObject json = null;
@@ -51,7 +51,7 @@ public class ActivityHttpInterface extends HttpInterface {
                     json.getString("publishStatus"),
                     ""
                     );
-            ActivityManager.getInstance().createActivity(newactivity);
+            ActivityManager.getInstance().createActivity( headers, newactivity);
             return new AppResponse("Insert Successful");
 
         }catch (Exception e){
