@@ -3,15 +3,19 @@ package edu.cmu.andrew.karim.server.http.interfaces;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.mongodb.client.MongoCollection;
+import edu.cmu.andrew.karim.server.http.exceptions.HttpBadRequestException;
 import edu.cmu.andrew.karim.server.http.responses.AppResponse;
 import edu.cmu.andrew.karim.server.http.utils.PATCH;
+import edu.cmu.andrew.karim.server.managers.ActivityProviderManager;
 import edu.cmu.andrew.karim.server.managers.BookingManager;
 import edu.cmu.andrew.karim.server.models.Booking;
+import edu.cmu.andrew.karim.server.utils.AppLogger;
 import org.bson.Document;
 import org.json.JSONObject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
 
 
 @Path("/booking")
@@ -52,6 +56,24 @@ public class BookingHttpInterface extends HttpInterface {
             throw handleException("POST users", e);
         }
 
+    }
+
+    @GET
+    //@Produces({MediaType.APPLICATION_JSON})
+    public AppResponse getBooking(){
+        try{
+            AppLogger.info("Got an API call");
+            ArrayList<Booking> bookings = null;
+
+            bookings= BookingManager.getInstance().getBookingList();
+
+            if(bookings != null)
+                return new AppResponse(bookings);
+            else
+                throw new HttpBadRequestException(0, "Problem with getting booking");
+        }catch (Exception e){
+            throw handleException("GET /booking", e);
+        }
     }
 
     @PATCH

@@ -1,12 +1,16 @@
 package edu.cmu.andrew.karim.server.managers;
 
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import edu.cmu.andrew.karim.server.exceptions.AppException;
 import edu.cmu.andrew.karim.server.exceptions.AppInternalServerException;
+import edu.cmu.andrew.karim.server.models.Parent;
 import edu.cmu.andrew.karim.server.models.Review;
 import edu.cmu.andrew.karim.server.utils.MongoPool;
 import org.bson.Document;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class ReviewManager extends Manager {
     public static ReviewManager _self;
@@ -45,6 +49,25 @@ public class ReviewManager extends Manager {
         } catch (Exception e) {
             throw handleException("Create Review", e);
         }
+    }
 
+    public ArrayList<Review> getReviewList() throws AppException {
+        try{
+            ArrayList<Review> reviewList = new ArrayList<>();
+            FindIterable<Document> reviewDocs = reviewCollection.find();
+            for(Document reviewDoc: reviewDocs) {
+                Review review = new Review(
+                        reviewDoc.getObjectId("_id").toString(),
+                        reviewDoc.getString("reviewId"),
+                        reviewDoc.getString("parentId"),
+                        reviewDoc.getString("bookingId"),
+                        reviewDoc.getString("ratings")
+                );
+                reviewList.add(review);
+            }
+            return new ArrayList<>(reviewList);
+        } catch(Exception e){
+            throw handleException("Get parent List", e);
+        }
     }
 }

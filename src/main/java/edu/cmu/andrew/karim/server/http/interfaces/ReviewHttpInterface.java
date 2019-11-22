@@ -3,17 +3,19 @@ package edu.cmu.andrew.karim.server.http.interfaces;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.mongodb.client.MongoCollection;
+import edu.cmu.andrew.karim.server.http.exceptions.HttpBadRequestException;
 import edu.cmu.andrew.karim.server.http.responses.AppResponse;
+import edu.cmu.andrew.karim.server.managers.BookingManager;
 import edu.cmu.andrew.karim.server.managers.ReviewManager;
+import edu.cmu.andrew.karim.server.models.Booking;
 import edu.cmu.andrew.karim.server.models.Review;
+import edu.cmu.andrew.karim.server.utils.AppLogger;
 import org.bson.Document;
 import org.json.JSONObject;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
 
 
 @Path("/review")
@@ -53,6 +55,24 @@ public class ReviewHttpInterface extends HttpInterface {
         } catch (Exception e) {
             throw handleException("POST users", e);
         }
-
     }
+
+    @GET
+    //@Produces({MediaType.APPLICATION_JSON})
+    public AppResponse getReviews(){
+        try{
+            AppLogger.info("Got an API call");
+            ArrayList<Review> reviews = null;
+
+            reviews= ReviewManager.getInstance().getReviewList();
+
+            if(reviews != null)
+                return new AppResponse(reviews);
+            else
+                throw new HttpBadRequestException(0, "Problem with getting reviews");
+        }catch (Exception e){
+            throw handleException("GET /review", e);
+        }
+    }
+
 }
