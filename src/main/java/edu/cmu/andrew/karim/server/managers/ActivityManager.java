@@ -45,7 +45,7 @@ public class ActivityManager extends Manager {
         try{
             Session session = SessionManager.getInstance().getSessionForToken(headers);
             ArrayList<User> user = UserManager.getInstance().getUserById(session.getUserId());
-            if(!session.getUserId().equals(user.get(0).getId()))
+            if(!session.getUserId().equals(activity.getUpdateUser()))
                 throw new AppUnauthorizedException(70,"Invalid user id");
 
             JSONObject json = new JSONObject(activity);
@@ -90,7 +90,8 @@ public class ActivityManager extends Manager {
                         activityDoc.getDouble("price"),
                         activityDoc.getString("currency"),
                         activityDoc.getString("publishStatus"),
-                        activityDoc.getString("avgRating")
+                        activityDoc.getString("avgRating"),
+                        activityDoc.getString("updateUser")
                 );
                 activityList.add(activity);
             }
@@ -119,7 +120,8 @@ public class ActivityManager extends Manager {
                         activityDoc.getDouble("price"),
                         activityDoc.getString("currency"),
                         activityDoc.getString("publishStatus"),
-                        activityDoc.getString("avgRating")
+                        activityDoc.getString("avgRating"),
+                        activityDoc.getString("updateUser")
                 );
                 activityList.add(activity);
             }
@@ -148,7 +150,8 @@ public class ActivityManager extends Manager {
                         activityDoc.getDouble("price"),
                         activityDoc.getString("currency"),
                         activityDoc.getString("publishStatus"),
-                        activityDoc.getString("avgRating")
+                        activityDoc.getString("avgRating"),
+                        activityDoc.getString("updateUser")
                 );
                 activityList.add(activity);
             }
@@ -180,7 +183,8 @@ public class ActivityManager extends Manager {
                         activityDoc.getDouble("price"),
                         activityDoc.getString("currency"),
                         activityDoc.getString("publishStatus"),
-                        activityDoc.getString("avgRating")
+                        activityDoc.getString("avgRating"),
+                        activityDoc.getString("updateUser")
                 );
                 activityList.add(activity);
             }
@@ -208,7 +212,8 @@ public class ActivityManager extends Manager {
                             activityDoc.getDouble("price"),
                             activityDoc.getString("currency"),
                             activityDoc.getString("publishStatus"),
-                            activityDoc.getString("avgRating")
+                            activityDoc.getString("avgRating"),
+                            activityDoc.getString("updateUser")
                     );
                     activityList.add(activity);
                 }
@@ -235,7 +240,8 @@ public class ActivityManager extends Manager {
                     .append("price",activity.getPrice())
                     .append("currency",activity.getCurrency())
                     .append("publishStatus",activity.getPublishStatus())
-                    .append("avgRating" , activity.getAvgRating());
+                    .append("avgRating" , activity.getAvgRating())
+                    .append ("updateUser", activity.getUpdateUser());
 
             Bson updateOperationDocument = new Document("$set", newValue);
 

@@ -49,7 +49,8 @@ public class ActivityHttpInterface extends HttpInterface {
                     json.getDouble("price"),
                     json.getString("currency"),
                     json.getString("publishStatus"),
-                    ""
+                    "",
+                    json.getString("updateUser")
                     );
             ActivityManager.getInstance().createActivity( headers, newactivity);
             return new AppResponse("Insert Successful");
@@ -129,7 +130,8 @@ public class ActivityHttpInterface extends HttpInterface {
                     json.getDouble("price"),
                     json.getString("currency"),
                     json.getString("publishStatus"),
-                    json.getString("avgrating")
+                    json.getString("avgrating"),
+                    json.getString("updateUser")
             );
 
             ActivityManager.getInstance().updateActivity(activity);
