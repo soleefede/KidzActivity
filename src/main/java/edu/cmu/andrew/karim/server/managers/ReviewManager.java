@@ -2,6 +2,7 @@ package edu.cmu.andrew.karim.server.managers;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
 import edu.cmu.andrew.karim.server.exceptions.AppException;
 import edu.cmu.andrew.karim.server.exceptions.AppInternalServerException;
 import edu.cmu.andrew.karim.server.models.Review;
@@ -73,4 +74,53 @@ public class ReviewManager extends Manager {
             throw handleException("Get Review List", e);
         }
     }
+
+    public ArrayList<Review> getReviewBooking(String bookingId ) throws AppException {
+        try{
+            ArrayList<Review> reviewList = new ArrayList<>();
+          //  FindIterable<Document> reviewDocs = reviewCollection.find();
+            FindIterable<Document> reviewDocs = reviewCollection.find().filter(Filters.eq("bookingId",bookingId));
+
+            for(Document reviewDoc: reviewDocs) {
+                Review review = new Review(
+                        reviewDoc.getString("reviewId").toString(),
+                        reviewDoc.getString("parentId"),
+                        reviewDoc.getString("reviewDate").toString(),
+                        reviewDoc.getString("bookingId"),
+                        reviewDoc.getString("ratings"),
+                        reviewDoc.getString("reviewComments")
+                );
+                reviewList.add(review);
+            }
+            return new ArrayList<>(reviewList);
+        } catch(Exception e){
+            throw handleException("Get Review List", e);
+        }
+    }
+
+    public ArrayList<Review> getReviewActivity(String activityId ) throws AppException {
+        try{
+            ArrayList<Review> reviewList = new ArrayList<>();
+             FindIterable<Document> reviewDocs = reviewCollection.find();
+            //FindIterable<Document> reviewDocs = reviewCollection.find().filter(Filters.eq("bookingId",bookingId));
+
+            for(Document reviewDoc: reviewDocs) {
+                Review review = new Review(
+                        reviewDoc.getString("reviewId").toString(),
+                        reviewDoc.getString("parentId"),
+                        reviewDoc.getString("reviewDate").toString(),
+                        reviewDoc.getString("bookingId"),
+                        reviewDoc.getString("ratings"),
+                        reviewDoc.getString("reviewComments")
+                );
+                reviewList.add(review);
+            }
+            return new ArrayList<>(reviewList);
+        } catch(Exception e){
+            throw handleException("Get Review List", e);
+        }
+    }
+
+
+
 }
