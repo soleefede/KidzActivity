@@ -3,16 +3,23 @@ package edu.cmu.andrew.karim.server.http.interfaces;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.mongodb.client.MongoCollection;
+import edu.cmu.andrew.karim.server.exceptions.AppUnauthorizedException;
 import edu.cmu.andrew.karim.server.http.exceptions.HttpBadRequestException;
 import edu.cmu.andrew.karim.server.http.responses.AppResponse;
 import edu.cmu.andrew.karim.server.http.utils.PATCH;
 import edu.cmu.andrew.karim.server.managers.ActivityProviderManager;
+import edu.cmu.andrew.karim.server.managers.SessionManager;
+import edu.cmu.andrew.karim.server.managers.UserManager;
 import edu.cmu.andrew.karim.server.models.ActivityProvider;
+import edu.cmu.andrew.karim.server.models.Session;
+import edu.cmu.andrew.karim.server.models.User;
 import edu.cmu.andrew.karim.server.utils.*;
 import org.bson.Document;
 import org.json.JSONObject;
 
-import javax.ws.rs.*;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -22,7 +29,7 @@ import java.util.ArrayList;
 @Path("/activityProviderData")
 public class LoadActivityProviderDataHttpInterface extends HttpInterface {
     private ObjectWriter ow;
-    private MongoCollection<Document>  activityCollection = null;
+    private MongoCollection<Document> activityProviderCollection = null;
 
     public LoadActivityProviderDataHttpInterface() {
         ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
@@ -30,9 +37,12 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
     @POST
     //@Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public AppResponse postActivityProvider(){
+    public AppResponse postActivityProvider(@Context HttpHeaders headers){
         try{
-
+            Session session = SessionManager.getInstance().getSessionForToken(headers);
+            ArrayList<User> user = UserManager.getInstance().getUserById(session.getUserId());
+            if(!session.getUserId().equals(user.get(0).getId()))
+                throw new AppUnauthorizedException(70,"Invalid user id");
             for (int i = 0; i < 10; i++) {
                 if(i==0) {
                     ActivityProvider newactivityprovider = new ActivityProvider(
@@ -51,9 +61,10 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "0.2",
                             "Visa",
                             "4539 1282 2152 8459",
-                            "578"
+                            "578",
+                            ""
                     );
-                    ActivityProviderManager.getInstance().createActivityProvider(newactivityprovider);
+                    ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
                 if(i==1) {
                     ActivityProvider newactivityprovider = new ActivityProvider(
@@ -72,9 +83,10 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "0.2",
                             "MasterCard",
                             "5209 3070 4056 5936",
-                            "451"
+                            "451",
+                            ""
                     );
-                    ActivityProviderManager.getInstance().createActivityProvider(newactivityprovider);
+                    ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
 
                 if(i==2) {
@@ -94,9 +106,10 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "0.2",
                             "Master Card",
                             "5353 4988 4821 0561",
-                            "488"
+                            "488",
+                            ""
                     );
-                    ActivityProviderManager.getInstance().createActivityProvider(newactivityprovider);
+                    ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
                 if(i==3) {
                     ActivityProvider newactivityprovider = new ActivityProvider(
@@ -115,9 +128,10 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "0.2",
                             "Visa",
                             "5360 9913 3483 4317",
-                            "218"
+                            "218",
+                            ""
                     );
-                    ActivityProviderManager.getInstance().createActivityProvider(newactivityprovider);
+                    ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
 
                 if(i==4) {
@@ -137,9 +151,10 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "0.2",
                             "Visa",
                             "5147 2751 8677 2860",
-                            "238"
+                            "238",
+                            ""
                     );
-                    ActivityProviderManager.getInstance().createActivityProvider(newactivityprovider);
+                    ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
                 if(i==5) {
                     ActivityProvider newactivityprovider = new ActivityProvider(
@@ -158,9 +173,10 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "0.2",
                             "Visa",
                             "4929 1636 1112 6596",
-                            "093"
+                            "093",
+                             ""
                     );
-                    ActivityProviderManager.getInstance().createActivityProvider(newactivityprovider);
+                    ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
                 if(i==6) {
                     ActivityProvider newactivityprovider = new ActivityProvider(
@@ -179,9 +195,10 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "0.2",
                             "Visa",
                             "4539 2774 0520 9640",
-                            "487"
+                            "487",
+                            ""
                     );
-                    ActivityProviderManager.getInstance().createActivityProvider(newactivityprovider);
+                    ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
                 if(i==7) {
                     ActivityProvider newactivityprovider = new ActivityProvider(
@@ -200,9 +217,10 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "0.2",
                             "Visa",
                             "4532 0637 6391 9716",
-                            "456"
+                            "456",
+                            ""
                     );
-                    ActivityProviderManager.getInstance().createActivityProvider(newactivityprovider);
+                    ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
                 if(i==8) {
                     ActivityProvider newactivityprovider = new ActivityProvider(
@@ -221,9 +239,10 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "0.2",
                             "Master Card",
                             "4916 3752 9317 4901",
-                            "052"
+                            "052",
+                            ""
                     );
-                    ActivityProviderManager.getInstance().createActivityProvider(newactivityprovider);
+                    ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
 
                 if(i==9) {
@@ -243,9 +262,10 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "0.2",
                             "Master Card",
                             "4929 9695 6552 9100",
-                            "244"
+                            "244",
+                            ""
                     );
-                    ActivityProviderManager.getInstance().createActivityProvider(newactivityprovider);
+                    ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
 
             }

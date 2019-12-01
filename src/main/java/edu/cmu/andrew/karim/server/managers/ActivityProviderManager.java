@@ -7,7 +7,10 @@ import com.mongodb.client.model.*;
 import com.mongodb.client.model.Sorts;
 import edu.cmu.andrew.karim.server.exceptions.AppException;
 import edu.cmu.andrew.karim.server.exceptions.AppInternalServerException;
+import edu.cmu.andrew.karim.server.exceptions.AppUnauthorizedException;
 import edu.cmu.andrew.karim.server.models.ActivityProvider;
+import edu.cmu.andrew.karim.server.models.Session;
+import edu.cmu.andrew.karim.server.models.User;
 import edu.cmu.andrew.karim.server.utils.MongoPool;
 import edu.cmu.andrew.karim.server.utils.AppLogger;
 import org.bson.Document;
@@ -15,6 +18,8 @@ import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.json.JSONObject;
 
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import java.util.ArrayList;
 
 public class ActivityProviderManager extends Manager{
@@ -34,9 +39,14 @@ public class ActivityProviderManager extends Manager{
     }
 
 
-    public void createActivityProvider(ActivityProvider activityProvider) throws AppException {
+    public void createActivityProvider(@Context HttpHeaders headers, ActivityProvider activityProvider) throws AppException {
 
         try{
+            Session session = SessionManager.getInstance().getSessionForToken(headers);
+            ArrayList<User> user = UserManager.getInstance().getUserById(session.getUserId());
+            if(!session.getUserId().equals(activityProvider.getUpdateUser()))
+                throw new AppUnauthorizedException(70,"Invalid user id");
+
             JSONObject json = new JSONObject(activityProvider);
 
             Document newDoc = new Document()
@@ -54,7 +64,8 @@ public class ActivityProviderManager extends Manager{
                     .append("commissionPercentage", activityProvider.getCommissionPercentage())
                     .append("bankName", activityProvider.getBankName())
                     .append("bankAccNumber", activityProvider.getBankAccNumber())
-                    .append("pinCode", activityProvider.getPinCode());
+                    .append("pinCode", activityProvider.getPinCode())
+                    .append("updateUser", activityProvider.getUpdateUser());
 
             if (newDoc != null)
                 activityProviderCollection.insertOne(newDoc);
@@ -67,8 +78,12 @@ public class ActivityProviderManager extends Manager{
 
     }
 
-    public void updateActivityProvider(ActivityProvider activityProvider) throws AppException {
+    public void updateActivityProvider(@Context HttpHeaders headers, ActivityProvider activityProvider) throws AppException {
         try {
+            Session session = SessionManager.getInstance().getSessionForToken(headers);
+            ArrayList<User> user = UserManager.getInstance().getUserById(session.getUserId());
+            if(!session.getUserId().equals(activityProvider.getUpdateUser()))
+                throw new AppUnauthorizedException(70,"Invalid user id");
 
             Bson filter = new Document("activityProviderId", new String(activityProvider.getActivityProviderId()));
             Bson newValue = new Document()
@@ -86,7 +101,8 @@ public class ActivityProviderManager extends Manager{
                     .append("commissionPercentage", activityProvider.getCommissionPercentage())
                     .append("bankName", activityProvider.getBankName())
                     .append("bankAccNumber", activityProvider.getBankAccNumber())
-                    .append("pinCode", activityProvider.getPinCode());
+                    .append("pinCode", activityProvider.getPinCode())
+                    .append("updateUser", activityProvider.getUpdateUser());
             Bson updateOperationDocument = new Document("$set", newValue);
 
             if (newValue != null)
@@ -99,8 +115,13 @@ public class ActivityProviderManager extends Manager{
         }
     }
 
-    public void deleteActivityProvider(String activityProviderId) throws AppException {
+    public void deleteActivityProvider(@Context HttpHeaders headers, String activityProviderId) throws AppException {
         try {
+            Session session = SessionManager.getInstance().getSessionForToken(headers);
+            ArrayList<User> user = UserManager.getInstance().getUserById(session.getUserId());
+            if(!session.getUserId().equals(activityProviderId))
+                throw new AppUnauthorizedException(70,"Invalid user id");
+
             Bson filter = new Document("activityProviderId", activityProviderId);
             activityProviderCollection.deleteOne(filter);
         }catch (Exception e){
@@ -129,7 +150,8 @@ public class ActivityProviderManager extends Manager{
                         activityProviderDoc.getString("commissionPercentage"),
                         activityProviderDoc.getString("bankName"),
                         activityProviderDoc.getString("bankAccNumber"),
-                        activityProviderDoc.getString("pinCode")
+                        activityProviderDoc.getString("pinCode"),
+                        activityProviderDoc.getString("updateUser")
                 );
                 activityProviderList.add(activityProvider);
             }
@@ -164,7 +186,8 @@ public class ActivityProviderManager extends Manager{
                         activityProviderDoc.getString("commissionPercentage"),
                         activityProviderDoc.getString("bankName"),
                         activityProviderDoc.getString("bankAccNumber"),
-                        activityProviderDoc.getString("pinCode")
+                        activityProviderDoc.getString("pinCode"),
+                        activityProviderDoc.getString("updateUser")
                 );
                 activityProviderList.add(activityProvider);
             }
@@ -195,7 +218,8 @@ public class ActivityProviderManager extends Manager{
                         activityProviderDoc.getString("commissionPercentage"),
                         activityProviderDoc.getString("bankName"),
                         activityProviderDoc.getString("bankAccNumber"),
-                        activityProviderDoc.getString("pinCode")
+                        activityProviderDoc.getString("pinCode"),
+                        activityProviderDoc.getString("updateUser")
                 );
                 activityProviderList.add(activityProvider);
             }
@@ -231,7 +255,8 @@ public class ActivityProviderManager extends Manager{
                         activityProviderDoc.getString("commissionPercentage"),
                         activityProviderDoc.getString("bankName"),
                         activityProviderDoc.getString("bankAccNumber"),
-                        activityProviderDoc.getString("pinCode")
+                        activityProviderDoc.getString("pinCode"),
+                        activityProviderDoc.getString("updateUser")
                 );
                 activityProviderList.add(activityProvider);
             }
@@ -241,8 +266,9 @@ public class ActivityProviderManager extends Manager{
         }
     }
 
-    public ArrayList<ActivityProvider> getActivityProviderById(String activityProviderId) throws AppException {
+    public ArrayList<ActivityProvider> getActivityProviderById(HttpHeaders headers, String activityProviderId) throws AppException {
         try{
+
             ArrayList<ActivityProvider> activityProviderList = new ArrayList<>();
             FindIterable<Document> activityProviderDocs = activityProviderCollection.find();
             for(Document activityProviderDoc: activityProviderDocs) {
@@ -263,7 +289,8 @@ public class ActivityProviderManager extends Manager{
                             activityProviderDoc.getString("commissionPercentage"),
                             activityProviderDoc.getString("bankName"),
                             activityProviderDoc.getString("bankAccNumber"),
-                            activityProviderDoc.getString("pinCode")
+                            activityProviderDoc.getString("pinCode"),
+                            activityProviderDoc.getString("updateUser")
                     );
                     activityProviderList.add(activityProvider);
                 }
