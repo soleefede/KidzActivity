@@ -2,6 +2,7 @@ package edu.cmu.andrew.karim.server.models;
 
 public class Booking {
     String bookingId;
+    String bookingDate;
     String parentId;
     String activityId;
     String paymentId;
@@ -11,10 +12,11 @@ public class Booking {
     String bookingStatus;
     String confirmStatus;
 
-    public Booking(String bookingId, String parentId, String activityId,
+    public Booking(String bookingId, String bookingDate,String parentId, String activityId,
                    String availabilityId,String paymentId, int noOfSeats, String kidName, String bookingStatus,
                    String confirmStatus) {
         this.bookingId = bookingId;
+        this.bookingDate = bookingDate;
         this.parentId = parentId;
         this.activityId = activityId;
         this.paymentId = paymentId;
@@ -98,5 +100,7 @@ public class Booking {
         this.confirmStatus = confirmStatus;
     }
 
+    public void setBookingDate(String bookingDate) { this.bookingDate = bookingDate; }
 
+    public String getBookingDate() { return bookingDate; }
 }

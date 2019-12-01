@@ -61,7 +61,8 @@ public class ActivityManager extends Manager {
                     .append("photo",activity.getPhoto())
                     .append("price",activity.getPrice())
                     .append("currency",activity.getCurrency())
-                    .append("publishStatus",activity.getPublishStatus());;
+                    .append("publishStatus",activity.getPublishStatus())
+                    .append("updateUser", activity.getUpdateUser());
             if (newDoc != null)
                 activityCollection.insertOne(newDoc);
             else
@@ -228,7 +229,7 @@ public class ActivityManager extends Manager {
         try {
 
             Session session = SessionManager.getInstance().getSessionForToken(headers);
-            ArrayList<User> user = UserManager.getInstance().getUserById(session.getUserId());
+          //  ArrayList<User> user = UserManager.getInstance().getUserById(session.getUserId());
             if(!session.getUserId().equals(activity.getUpdateUser()))
                 throw new AppUnauthorizedException(70,"Invalid user id");
 
