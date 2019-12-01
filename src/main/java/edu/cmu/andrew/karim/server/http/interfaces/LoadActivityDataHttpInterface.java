@@ -36,7 +36,8 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
         try{
             Session session = SessionManager.getInstance().getSessionForToken(headers);
             ArrayList<User> user = UserManager.getInstance().getUserById(session.getUserId());
-            if(!session.getUserId().equals(user.get(0).getId()))
+            String userId = "5de417abe5371f0f712fd55d";
+            if(!(session.getUserId().equals(userId)))
                 throw new AppUnauthorizedException(70,"Invalid user id");
             for (int i = 0; i < 10; i++) {
                 if(i==0) {
@@ -52,7 +53,9 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             150,
                             "USD",
                             "Review",
-                            "3"
+                            "3",
+                            "5de417abe5371f0f712fd55d"
+
                     );
                     ActivityManager.getInstance().createActivity(headers,newactivity);
                 }
@@ -69,7 +72,8 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             100,
                             "USD",
                             "Draft",
-                            "3"
+                            "3",
+                            "5de417abe5371f0f712fd55d"
                     );
                     ActivityManager.getInstance().createActivity(headers,newactivity);
                 }
@@ -87,7 +91,8 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             80,
                             "USD",
                             "Draft",
-                            "3"
+                            "3",
+                            "5de417abe5371f0f712fd55d"
                     );
                     ActivityManager.getInstance().createActivity(headers,newactivity);
                 }
@@ -104,7 +109,8 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             30,
                             "USD",
                             "Review",
-                            "3"
+                            "3",
+                            "5de417abe5371f0f712fd55d"
                     );
                     ActivityManager.getInstance().createActivity(headers,newactivity);
                 }
@@ -122,7 +128,8 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             25,
                             "USD",
                             "Publish",
-                            "3"
+                            "3",
+                            "5de417abe5371f0f712fd55d"
                     );
                     ActivityManager.getInstance().createActivity(headers,newactivity);
                 }
@@ -139,7 +146,8 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             35,
                             "USD",
                             "Publish",
-                            "3"
+                            "3",
+                            "5de417abe5371f0f712fd55d"
                     );
                     ActivityManager.getInstance().createActivity(headers,newactivity);
                 }
@@ -156,7 +164,8 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             80,
                             "USD",
                             "Publish",
-                            "3"
+                            "3",
+                            "5de417abe5371f0f712fd55d"
                     );
                     ActivityManager.getInstance().createActivity(headers,newactivity);
                 }
@@ -173,7 +182,8 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             75,
                             "USD",
                             "Publish",
-                            "3"
+                            "3",
+                            "5de417abe5371f0f712fd55d"
                     );
                     ActivityManager.getInstance().createActivity(headers,newactivity);
                 }
@@ -190,7 +200,8 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             50,
                             "USD",
                             "Publish",
-                            "3"
+                            "3",
+                            "5de417abe5371f0f712fd55d"
                     );
                     ActivityManager.getInstance().createActivity(headers,newactivity);
                 }
@@ -208,7 +219,8 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             60,
                             "USD",
                             "Draft",
-                            "3"
+                            "3",
+                            "5de417abe5371f0f712fd55d"
                     );
                     ActivityManager.getInstance().createActivity(headers,newactivity);
                 }

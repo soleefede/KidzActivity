@@ -6,7 +6,6 @@ import com.mongodb.client.MongoCollection;
 import edu.cmu.andrew.karim.server.http.exceptions.HttpBadRequestException;
 import edu.cmu.andrew.karim.server.http.responses.AppResponse;
 import edu.cmu.andrew.karim.server.http.utils.PATCH;
-import edu.cmu.andrew.karim.server.managers.ActivityProviderManager;
 import edu.cmu.andrew.karim.server.managers.BookingManager;
 import edu.cmu.andrew.karim.server.models.Booking;
 import edu.cmu.andrew.karim.server.utils.AppLogger;
@@ -14,6 +13,8 @@ import org.bson.Document;
 import org.json.JSONObject;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 
@@ -39,6 +40,7 @@ public class BookingHttpInterface extends HttpInterface {
 
             Booking newbooking = new Booking(
                     json.getString("bookingId"),
+                    json.getString("bookindDate"),
                     json.getString("parentId"),
                     json.getString("activityId"),
                     json.getString("availabilityId"),
@@ -59,21 +61,27 @@ public class BookingHttpInterface extends HttpInterface {
     }
 
     @GET
-    //@Produces({MediaType.APPLICATION_JSON})
-    public AppResponse getBooking(){
+    //@Path("/{activityId}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public AppResponse getBooking(@Context HttpHeaders headers, @QueryParam("activityId") String activityId){
+
         try{
             AppLogger.info("Got an API call");
-            ArrayList<Booking> bookings = null;
+            ArrayList<Booking> bookings  = null;
 
-            bookings= BookingManager.getInstance().getBookingList();
+            if(activityId != null)
+                bookings = BookingManager.getInstance().getBookingActivity(activityId);
+            else
+               bookings = BookingManager.getInstance().getBookingList();
 
-            if(bookings != null)
+            if( bookings != null)
                 return new AppResponse(bookings);
             else
-                throw new HttpBadRequestException(0, "Problem with getting booking");
+                throw new HttpBadRequestException(0, "Problem with getting availability");
         }catch (Exception e){
-            throw handleException("GET /booking", e);
+            throw handleException("GET /availability/{activityId}", e);
         }
+
     }
 
     @PATCH

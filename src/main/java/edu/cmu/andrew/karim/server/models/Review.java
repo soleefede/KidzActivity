@@ -3,15 +3,17 @@ package edu.cmu.andrew.karim.server.models;
 public class Review {
     String reviewId;
     String parentId;
+    String reviewDate;
     String bookingId;
     String ratings;
     String reviewComments;
 
-    public Review(String reviewId, String parentId, String bookingId, String ratings, String reviewComments)
+    public Review(String reviewId, String parentId, String reviewDate, String bookingId, String ratings, String reviewComments)
     {
 
         this.reviewId = reviewId;
         this.parentId = parentId;
+        this.reviewDate = reviewDate;
         this.bookingId = bookingId;
         this.ratings = ratings;
         this.reviewComments = reviewComments;
@@ -58,4 +60,8 @@ public class Review {
     public void setReviewComments(String reviewComments) {
         this.reviewComments = reviewComments;
     }
+
+    public String getReviewDate() { return reviewDate; }
+
+    public void setReviewDate(String reviewDate) { this.reviewDate = reviewDate; }
 }

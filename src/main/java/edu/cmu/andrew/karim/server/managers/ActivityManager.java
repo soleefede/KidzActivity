@@ -45,7 +45,7 @@ public class ActivityManager extends Manager {
         try{
             Session session = SessionManager.getInstance().getSessionForToken(headers);
             ArrayList<User> user = UserManager.getInstance().getUserById(session.getUserId());
-            if(!session.getUserId().equals(user.get(0).getId()))
+            if(!session.getUserId().equals(activity.getUpdateUser()))
                 throw new AppUnauthorizedException(70,"Invalid user id");
 
             JSONObject json = new JSONObject(activity);
@@ -61,7 +61,8 @@ public class ActivityManager extends Manager {
                     .append("photo",activity.getPhoto())
                     .append("price",activity.getPrice())
                     .append("currency",activity.getCurrency())
-                    .append("publishStatus",activity.getPublishStatus());;
+                    .append("publishStatus",activity.getPublishStatus())
+                    .append("updateUser", activity.getUpdateUser());
             if (newDoc != null)
                 activityCollection.insertOne(newDoc);
             else
@@ -90,7 +91,8 @@ public class ActivityManager extends Manager {
                         activityDoc.getDouble("price"),
                         activityDoc.getString("currency"),
                         activityDoc.getString("publishStatus"),
-                        activityDoc.getString("avgRating")
+                        activityDoc.getString("avgRating"),
+                        activityDoc.getString("updateUser")
                 );
                 activityList.add(activity);
             }
@@ -119,7 +121,8 @@ public class ActivityManager extends Manager {
                         activityDoc.getDouble("price"),
                         activityDoc.getString("currency"),
                         activityDoc.getString("publishStatus"),
-                        activityDoc.getString("avgRating")
+                        activityDoc.getString("avgRating"),
+                        activityDoc.getString("updateUser")
                 );
                 activityList.add(activity);
             }
@@ -148,7 +151,8 @@ public class ActivityManager extends Manager {
                         activityDoc.getDouble("price"),
                         activityDoc.getString("currency"),
                         activityDoc.getString("publishStatus"),
-                        activityDoc.getString("avgRating")
+                        activityDoc.getString("avgRating"),
+                        activityDoc.getString("updateUser")
                 );
                 activityList.add(activity);
             }
@@ -180,7 +184,8 @@ public class ActivityManager extends Manager {
                         activityDoc.getDouble("price"),
                         activityDoc.getString("currency"),
                         activityDoc.getString("publishStatus"),
-                        activityDoc.getString("avgRating")
+                        activityDoc.getString("avgRating"),
+                        activityDoc.getString("updateUser")
                 );
                 activityList.add(activity);
             }
@@ -208,7 +213,8 @@ public class ActivityManager extends Manager {
                             activityDoc.getDouble("price"),
                             activityDoc.getString("currency"),
                             activityDoc.getString("publishStatus"),
-                            activityDoc.getString("avgRating")
+                            activityDoc.getString("avgRating"),
+                            activityDoc.getString("updateUser")
                     );
                     activityList.add(activity);
                 }
@@ -219,8 +225,13 @@ public class ActivityManager extends Manager {
         }
     }
 
-    public void updateActivity( Activity activity) throws AppException {
+    public void updateActivity( @Context HttpHeaders headers,Activity activity) throws AppException {
         try {
+
+            Session session = SessionManager.getInstance().getSessionForToken(headers);
+          //  ArrayList<User> user = UserManager.getInstance().getUserById(session.getUserId());
+            if(!session.getUserId().equals(activity.getUpdateUser()))
+                throw new AppUnauthorizedException(70,"Invalid user id");
 
             Bson filter = new Document("activityId", new String(activity.getActivityId()));
             Bson newValue = new Document()
@@ -235,7 +246,8 @@ public class ActivityManager extends Manager {
                     .append("price",activity.getPrice())
                     .append("currency",activity.getCurrency())
                     .append("publishStatus",activity.getPublishStatus())
-                    .append("avgRating" , activity.getAvgRating());
+                    .append("avgRating" , activity.getAvgRating())
+                    .append ("updateUser", activity.getUpdateUser());
 
             Bson updateOperationDocument = new Document("$set", newValue);
 
