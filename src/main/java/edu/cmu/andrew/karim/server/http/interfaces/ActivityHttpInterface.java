@@ -111,7 +111,7 @@ public class ActivityHttpInterface extends HttpInterface {
     @Path("/{activityId}")
     @Consumes({ MediaType.APPLICATION_JSON})
     @Produces({ MediaType.APPLICATION_JSON})
-    public AppResponse patchActivity(Object request, @PathParam("activityId") String activityId){
+    public AppResponse patchActivity(@Context HttpHeaders headers, Object request, @PathParam("activityId") String activityId){
 
         JSONObject json = null;
 
@@ -145,7 +145,7 @@ public class ActivityHttpInterface extends HttpInterface {
     @Path("/{activityId}")
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
-    public AppResponse deleteUsers(@PathParam("activityId") String activityId){
+    public AppResponse deleteUsers(@Context HttpHeaders headers, @PathParam("activityId") String activityId){
 
         try{
             ActivityManager.getInstance().deleteActivity(activityId);
