@@ -224,8 +224,13 @@ public class ActivityManager extends Manager {
         }
     }
 
-    public void updateActivity( Activity activity) throws AppException {
+    public void updateActivity( @Context HttpHeaders headers,Activity activity) throws AppException {
         try {
+
+            Session session = SessionManager.getInstance().getSessionForToken(headers);
+            ArrayList<User> user = UserManager.getInstance().getUserById(session.getUserId());
+            if(!session.getUserId().equals(activity.getUpdateUser()))
+                throw new AppUnauthorizedException(70,"Invalid user id");
 
             Bson filter = new Document("activityId", new String(activity.getActivityId()));
             Bson newValue = new Document()

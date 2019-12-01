@@ -112,7 +112,7 @@ public class ActivityHttpInterface extends HttpInterface {
     @Path("/{activityId}")
     @Consumes({ MediaType.APPLICATION_JSON})
     @Produces({ MediaType.APPLICATION_JSON})
-    public AppResponse patchActivity(Object request, @PathParam("activityId") String activityId){
+    public AppResponse patchActivity(@Context HttpHeaders headers,Object request, @PathParam("activityId") String activityId){
 
         JSONObject json = null;
 
@@ -134,7 +134,7 @@ public class ActivityHttpInterface extends HttpInterface {
                     json.getString("updateUser")
             );
 
-            ActivityManager.getInstance().updateActivity(activity);
+            ActivityManager.getInstance().updateActivity(headers,activity);
 
         }catch (Exception e){
             throw handleException("PATCH activity/{activityId}", e);
