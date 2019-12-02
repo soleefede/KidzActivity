@@ -36,7 +36,7 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
         try{
             Session session = SessionManager.getInstance().getSessionForToken(headers);
             ArrayList<User> user = UserManager.getInstance().getUserById(session.getUserId());
-            String userId = "5de417abe5371f0f712fd55d";
+            String userId = "5de46d0936712a6fbaabffbf";
             if(!(session.getUserId().equals(userId)))
                 throw new AppUnauthorizedException(70,"Invalid user id");
             for (int i = 0; i < 10; i++) {
@@ -54,7 +54,7 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "USD",
                             "Review",
                             "3",
-                            "5de417abe5371f0f712fd55d"
+                            userId
 
                     );
                     ActivityManager.getInstance().createActivity(headers,newactivity);
@@ -73,7 +73,7 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "USD",
                             "Draft",
                             "3",
-                            "5de417abe5371f0f712fd55d"
+                            userId
                     );
                     ActivityManager.getInstance().createActivity(headers,newactivity);
                 }
@@ -92,7 +92,7 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "USD",
                             "Draft",
                             "3",
-                            "5de417abe5371f0f712fd55d"
+                            userId
                     );
                     ActivityManager.getInstance().createActivity(headers,newactivity);
                 }
@@ -110,7 +110,7 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "USD",
                             "Review",
                             "3",
-                            "5de417abe5371f0f712fd55d"
+                            userId
                     );
                     ActivityManager.getInstance().createActivity(headers,newactivity);
                 }
@@ -129,7 +129,7 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "USD",
                             "Publish",
                             "3",
-                            "5de417abe5371f0f712fd55d"
+                            userId
                     );
                     ActivityManager.getInstance().createActivity(headers,newactivity);
                 }
@@ -147,7 +147,7 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "USD",
                             "Publish",
                             "3",
-                            "5de417abe5371f0f712fd55d"
+                            userId
                     );
                     ActivityManager.getInstance().createActivity(headers,newactivity);
                 }
@@ -165,7 +165,7 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "USD",
                             "Publish",
                             "3",
-                            "5de417abe5371f0f712fd55d"
+                            userId
                     );
                     ActivityManager.getInstance().createActivity(headers,newactivity);
                 }
@@ -183,7 +183,7 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "USD",
                             "Publish",
                             "3",
-                            "5de417abe5371f0f712fd55d"
+                            userId
                     );
                     ActivityManager.getInstance().createActivity(headers,newactivity);
                 }
@@ -201,7 +201,7 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "USD",
                             "Publish",
                             "3",
-                            "5de417abe5371f0f712fd55d"
+                            userId
                     );
                     ActivityManager.getInstance().createActivity(headers,newactivity);
                 }
@@ -220,7 +220,7 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
                             "USD",
                             "Draft",
                             "3",
-                            "5de417abe5371f0f712fd55d"
+                            userId
                     );
                     ActivityManager.getInstance().createActivity(headers,newactivity);
                 }

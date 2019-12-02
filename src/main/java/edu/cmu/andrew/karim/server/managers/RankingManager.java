@@ -28,6 +28,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 import java.net.HttpURLConnection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -74,8 +76,8 @@ public class RankingManager extends Manager{
                         rankingDoc.getDouble("price"),
                         rankingDoc.getString("currency"),
                         rankingDoc.getString("publishStatus"),
-                        rankingDoc.getString("latitude"),
-                        rankingDoc.getString("longitude")
+                        0,
+                        rankingDoc.getString("avgRating")
                 );
                 rankingList.add(ranking);
 
@@ -124,35 +126,61 @@ public class RankingManager extends Manager{
                     throw new AppInternalServerException(0, "Failed to update average reviews");
 
                 // Get Activity and Activity Provider Address
-                System.out.println(rankingDoc.getString("activityProviderId"));
+//                System.out.println(rankingDoc.getString("activityProviderId"));
+                String address="";
                 Document activityAddressDoc = activityProviderCollection.find(eq("activityProviderId", rankingDoc.getString("activityProviderId"))).first();
                 if (activityAddressDoc != null) {
-                    System.out.println(activityAddressDoc.getString("address1"));
-                }
-//                String address = activityAddressDoc.getString("address1");
-//                address += "," + activityAddressDoc.getString("city");
-//                address += "," + activityAddressDoc.getString("state");
-//
-//
-//                // Get coordinates of Activity Provider
-//                String key = "AIzaSyB7smrK4e9AABXv1cLCosoTkArFjpm_Z0k";
-//                URL url = new URL("https://maps.googleapis.com/maps/api/geocode/json?address="+address+"&key="+key);
-//                HttpURLConnection con = (HttpURLConnection) url.openConnection();
-//                con.setRequestMethod("GET");
-//                con.setRequestProperty("Content-Type", "application/json");
-//                int status = con.getResponseCode();
-//                System.out.println(status);
-//                BufferedReader in = new BufferedReader(
-//                        new InputStreamReader(con.getInputStream()));
-//                String inputLine;
-//                StringBuffer content = new StringBuffer();
-//                while ((inputLine = in.readLine()) != null) {
-//                    content.append(inputLine);
-//                }
-//                System.out.println(inputLine);
-//                in.close();
-//                con.disconnect();
+                    address = activityAddressDoc.getString("address1");
+                    address += "," + activityAddressDoc.getString("city");
+                    address += "," + activityAddressDoc.getString("state");
+                    // Get coordinates of Activity Provider
+//                    System.out.println("address:"+address);
+                    String key = "AIzaSyB7smrK4e9AABXv1cLCosoTkArFjpm_Z0k";
+                    String destination= "San+Jose,CA";
+                    URL url = new URL("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins="+address+"&destinations="+destination+"&key="+key);
+//                    System.out.println("url:"+url.toString());
+                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                    con.setRequestMethod("GET");
+                    con.setRequestProperty("Content-Type", "application/json");
+                    int status = con.getResponseCode();
+//                    System.out.println("Status code: "+status);
+                    BufferedReader in = new BufferedReader(
+                            new InputStreamReader(con.getInputStream()));
+                    String inputLine;
+                    StringBuffer content = new StringBuffer();
 
+                    while ((inputLine = in.readLine()) != null) {
+                        content.append(inputLine);
+                    }
+                    String[] parser1 = content.toString().split(":");
+                    int count = 0;
+                    for (String s: parser1){
+                        System.out.println(activityId+":"+s);
+                        count++;
+//                        if (count%13 == 8){
+//                            String[] distanceString = parser1[count].split(" ");
+//                            int distanceValue = Integer.parseInt(distanceString[0]);
+//                            Ranking ranking = new Ranking(
+//                                rankingDoc.getString("activityId").toString(),
+//                                rankingDoc.getString("activityName").toString(),
+//                                rankingDoc.getString("activityProviderId"),
+//                                rankingDoc.getString("effectiveDate"),
+//                                rankingDoc.getString("endDate"),
+//                                rankingDoc.getString("activityCategory"),
+//                                rankingDoc.getString("description"),
+//                                rankingDoc.getString("photo"),
+//                                rankingDoc.getDouble("price"),
+//                                rankingDoc.getString("currency"),
+//                                rankingDoc.getString("publishStatus"),
+//                                distanceValue
+//                            );
+//                            rankingList.add(ranking);
+//                            System.out.println(ranking.getDistance());
+//                        }
+                    }
+                    in.close();
+                    con.disconnect();
+                }
             }
             return rankingList;
         } catch(Exception e){

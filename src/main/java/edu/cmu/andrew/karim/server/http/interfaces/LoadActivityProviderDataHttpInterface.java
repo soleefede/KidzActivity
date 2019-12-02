@@ -52,7 +52,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Techo Solutions",
                             "09-6161234",
                             "096-16-1234",
-                            "663 Patterson Road",
+                            "663+Patterson+Road",
                             "Apt 0",
                             "Brooklyn",
                             "NY",
@@ -62,7 +62,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Visa",
                             "4539 1282 2152 8459",
                             "578",
-                            ""
+                            "5de46d0936712a6fbaabffbf"
                     );
                     ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
@@ -74,7 +74,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Piccolo Mondo",
                             "54-3101234",
                             "543-10-1234",
-                            "2082 Illinois Avenue",
+                            "2082+Illinois+Avenue",
                             "Apt 1",
                             "Portland",
                             "OR",
@@ -84,7 +84,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "MasterCard",
                             "5209 3070 4056 5936",
                             "451",
-                            ""
+                            "5de46d0936712a6fbaabffbf"
                     );
                     ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
@@ -97,9 +97,9 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "National Shirt Shop",
                             "77-1301234",
                             "771-30-1234",
-                            "28 Wyatt Street",
+                            "28+Wyatt+Street",
                             "APT 2",
-                            "West Palm Beach",
+                            "West+Palm+Beach",
                             "FL",
                             "561-534-2507",
                             "JosephIAlvarado@rhyta.com",
@@ -107,7 +107,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Master Card",
                             "5353 4988 4821 0561",
                             "488",
-                            ""
+                            "5de46d0936712a6fbaabffbf"
                     );
                     ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
@@ -119,7 +119,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Star Interior Design",
                             "36-0201234",
                             "360-20-1234",
-                            "416 Lewis Street",
+                            "416+Lewis+Street",
                             "APT 3",
                             "Chicago",
                             "IL",
@@ -129,7 +129,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Visa",
                             "5360 9913 3483 4317",
                             "218",
-                            ""
+                            "5de46d0936712a6fbaabffbf"
                     );
                     ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
@@ -142,7 +142,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Al's Auto Parts",
                             "62-8381234",
                             "628-38-1234",
-                            "4112 Adams Drive",
+                            "4112+Adams+Drive",
                             "APT 4",
                             "Houston",
                             "TX",
@@ -152,7 +152,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Visa",
                             "5147 2751 8677 2860",
                             "238",
-                            ""
+                            "5de46d0936712a6fbaabffbf"
                     );
                     ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
@@ -164,7 +164,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Square Circle",
                             "44-8201234",
                             "448-20-1234",
-                            "3446 Grove Avenue",
+                            "3446+Grove+Avenue",
                             "APT 5",
                             "Clinton",
                             "OK",
@@ -174,7 +174,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Visa",
                             "4929 1636 1112 6596",
                             "093",
-                             ""
+                             "5de46d0936712a6fbaabffbf"
                     );
                     ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
@@ -186,9 +186,9 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Monk Home Loans",
                             "32-4761234",
                             "324-76-1234",
-                            "2509 Poplar Street",
+                            "2509+Poplar+Street",
                             "APT 6",
-                            "Burr Ridge",
+                            "Burr+Ridge",
                             "IL",
                             "708-703-2128",
                             "LouiseRSmalley@armyspy.com",
@@ -196,7 +196,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Visa",
                             "4539 2774 0520 9640",
                             "487",
-                            ""
+                            "5de46d0936712a6fbaabffbf"
                     );
                     ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
@@ -208,9 +208,9 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Sunny's Surplus",
                             "21-9261234",
                             "219-26-1234",
-                            "940 Bluff Street",
+                            "940+Bluff+Street",
                             "APT 7",
-                            "Mount Airy",
+                            "Mount+Airy",
                             "MD",
                             "301-799-5178",
                             "MichaelELevine@armyspy.com",
@@ -218,7 +218,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Visa",
                             "4532 0637 6391 9716",
                             "456",
-                            ""
+                            "5de46d0936712a6fbaabffbf"
                     );
                     ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
@@ -230,9 +230,9 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Burstein-Applebee",
                             "34-5901234",
                             "345-90-1234",
-                            "1646 Emeral Dreams Drive",
+                            "1646+Emeral+Dreams+Drive",
                             "APT 8",
-                            "Arlington Heights",
+                            "Arlington+Heights",
                             "IL",
                             "815-317-6136",
                             "IgnacioPBurnham@jourrapide.com",
@@ -240,7 +240,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Master Card",
                             "4916 3752 9317 4901",
                             "052",
-                            ""
+                            "5de46d0936712a6fbaabffbf"
                     );
                     ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
@@ -253,7 +253,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "The Great Train Stores",
                             "49-9211234",
                             "499-21-1234",
-                            "2065 Oak Lane",
+                            "2065+Oak+Lane",
                             "APT 9",
                             "Maryville",
                             "MO",
@@ -263,7 +263,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Master Card",
                             "4929 9695 6552 9100",
                             "244",
-                            ""
+                            "5de46d0936712a6fbaabffbf"
                     );
                     ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
