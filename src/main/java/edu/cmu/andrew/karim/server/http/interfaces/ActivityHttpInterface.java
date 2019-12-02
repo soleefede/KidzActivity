@@ -1,4 +1,5 @@
 package edu.cmu.andrew.karim.server.http.interfaces;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.mongodb.client.MongoCollection;
@@ -7,6 +8,7 @@ import edu.cmu.andrew.karim.server.http.responses.AppResponse;
 import edu.cmu.andrew.karim.server.http.utils.PATCH;
 import edu.cmu.andrew.karim.server.managers.ActivityManager;
 import edu.cmu.andrew.karim.server.models.Activity;
+import edu.cmu.andrew.karim.server.models.Ranking;
 import edu.cmu.andrew.karim.server.utils.AppLogger;
 import org.bson.Document;
 import org.json.JSONObject;
@@ -65,15 +67,19 @@ public class ActivityHttpInterface extends HttpInterface {
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public AppResponse getActivity(@Context HttpHeaders headers, @QueryParam("sortby") String sortby, @QueryParam("offset") Integer offset,
-                                   @QueryParam("count") Integer count,@QueryParam("category") String activityCategory ){
+                                   @QueryParam("count") Integer count,@QueryParam("category") String activityCategory ,
+                                   @QueryParam("location") String location ){
         try{
             AppLogger.info("Got an API call");
             ArrayList<Activity> activities = null;
+            ArrayList<Ranking> rankedActivities = null;
 
            if(sortby != null)
                 activities = ActivityManager.getInstance().getActivityListSorted(sortby);
              else if (activityCategory != null)
                activities = ActivityManager.getInstance().getActivityListFiltered(activityCategory);
+             else if (location != null)
+                 rankedActivities = ActivityManager.getInstance().getActivityListByDistance(location);
              else if(offset != null && count != null)
                 activities = ActivityManager.getInstance().getActivityListPaginated(offset, count);
             else

@@ -5,6 +5,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import edu.cmu.andrew.karim.server.exceptions.AppException;
 import edu.cmu.andrew.karim.server.exceptions.AppInternalServerException;
+import edu.cmu.andrew.karim.server.models.Booking;
 import edu.cmu.andrew.karim.server.models.Review;
 import edu.cmu.andrew.karim.server.utils.MongoPool;
 import org.bson.Document;
@@ -105,15 +106,18 @@ public class ReviewManager extends Manager {
             //FindIterable<Document> reviewDocs = reviewCollection.find().filter(Filters.eq("bookingId",bookingId));
 
             for(Document reviewDoc: reviewDocs) {
-                Review review = new Review(
-                        reviewDoc.getString("reviewId").toString(),
-                        reviewDoc.getString("parentId"),
-                        reviewDoc.getString("reviewDate").toString(),
-                        reviewDoc.getString("bookingId"),
-                        reviewDoc.getString("ratings"),
-                        reviewDoc.getString("reviewComments")
-                );
-                reviewList.add(review);
+                ArrayList<Booking> bookings = BookingManager.getInstance().getBookingById(reviewDoc.getString("bookingId"));
+                if(bookings.get(0).getActivityId().equals(activityId)) {
+                    Review review = new Review(
+                            reviewDoc.getString("reviewId").toString(),
+                            reviewDoc.getString("parentId"),
+                            reviewDoc.getString("reviewDate").toString(),
+                            reviewDoc.getString("bookingId"),
+                            reviewDoc.getString("ratings"),
+                            reviewDoc.getString("reviewComments")
+                    );
+                    reviewList.add(review);
+                }
             }
             return new ArrayList<>(reviewList);
         } catch(Exception e){
