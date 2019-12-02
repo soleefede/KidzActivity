@@ -62,7 +62,7 @@ public class ReviewHttpInterface extends HttpInterface {
     @GET
     //@Path("/{activityId}")
     @Produces({MediaType.APPLICATION_JSON})
-    public AppResponse getReviews(@Context HttpHeaders headers, @QueryParam("bookingId") String bookingId) {
+    public AppResponse getReviews(@Context HttpHeaders headers, @QueryParam("bookingId") String bookingId ,@QueryParam("activityId") String activityId) {
 
         try {
             AppLogger.info("Got an API call");
@@ -71,7 +71,8 @@ public class ReviewHttpInterface extends HttpInterface {
             if (bookingId != null)
                 //reviews = ReviewManager.getInstance().getReviewBooking(activityId);
                 reviews = ReviewManager.getInstance().getReviewList();
-
+            else if (activityId != null)
+                reviews = ReviewManager.getInstance().getReviewActivity(activityId);
             else
                 reviews = ReviewManager.getInstance().getReviewList();
 
