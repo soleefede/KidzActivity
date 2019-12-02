@@ -41,8 +41,13 @@ public class PaymentManager extends Manager {
                     .append("paymentStatus", payment.getPaymentStatus());
 
 
-            if (newDoc != null)
+            if (newDoc != null) {
                 paymentCollection.insertOne(newDoc);
+                //String product, String subtotal, String shipping, String tax, String total
+                String payPalLink = PayPalPaymentManager.getInstance().processPayment(payment.getPaymentId(), Float.toString(payment.getTotalPrice()),
+                        "5","6","100");
+                System.out.println(payPalLink);
+            }
             else
                 throw new AppInternalServerException(0, "Failed to create new payment");
 

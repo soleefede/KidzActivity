@@ -127,6 +127,7 @@ public class ActivityManager extends Manager {
                 );
                 activityList.add(activity);
             }
+            System.out.println("I am here ");
             rankedList = RankingManager.getInstance().calculateDistance(location);
             return new ArrayList<>(rankedList);
         } catch(Exception e){

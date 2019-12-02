@@ -78,8 +78,10 @@ public class ActivityHttpInterface extends HttpInterface {
                 activities = ActivityManager.getInstance().getActivityListSorted(sortby);
              else if (activityCategory != null)
                activities = ActivityManager.getInstance().getActivityListFiltered(activityCategory);
-             else if (location != null)
-                 rankedActivities = ActivityManager.getInstance().getActivityListByDistance(location);
+             else if (location != null) {
+               System.out.println("Location: " + location);
+               rankedActivities = ActivityManager.getInstance().getActivityListByDistance(location);
+           }
              else if(offset != null && count != null)
                 activities = ActivityManager.getInstance().getActivityListPaginated(offset, count);
             else
@@ -87,6 +89,8 @@ public class ActivityHttpInterface extends HttpInterface {
 
             if( activities  != null)
                 return new AppResponse( activities );
+            else if (rankedActivities!= null)
+                return new AppResponse( rankedActivities );
             else
                 throw new HttpBadRequestException(0, "Problem with getting  activities ");
         }catch (Exception e){
