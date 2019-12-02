@@ -79,7 +79,7 @@ public class ReviewManager extends Manager {
     public ArrayList<Review> getReviewBooking(String bookingId ) throws AppException {
         try{
             ArrayList<Review> reviewList = new ArrayList<>();
-          //  FindIterable<Document> reviewDocs = reviewCollection.find();
+            //  FindIterable<Document> reviewDocs = reviewCollection.find();
             FindIterable<Document> reviewDocs = reviewCollection.find().filter(Filters.eq("bookingId",bookingId));
 
             for(Document reviewDoc: reviewDocs) {
@@ -102,7 +102,7 @@ public class ReviewManager extends Manager {
     public ArrayList<Review> getReviewActivity(String activityId ) throws AppException {
         try{
             ArrayList<Review> reviewList = new ArrayList<>();
-             FindIterable<Document> reviewDocs = reviewCollection.find();
+            FindIterable<Document> reviewDocs = reviewCollection.find();
             //FindIterable<Document> reviewDocs = reviewCollection.find().filter(Filters.eq("bookingId",bookingId));
 
             for(Document reviewDoc: reviewDocs) {

@@ -3,16 +3,23 @@ package edu.cmu.andrew.karim.server.http.interfaces;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.mongodb.client.MongoCollection;
+import edu.cmu.andrew.karim.server.exceptions.AppUnauthorizedException;
 import edu.cmu.andrew.karim.server.http.exceptions.HttpBadRequestException;
 import edu.cmu.andrew.karim.server.http.responses.AppResponse;
 import edu.cmu.andrew.karim.server.http.utils.PATCH;
 import edu.cmu.andrew.karim.server.managers.ActivityProviderManager;
+import edu.cmu.andrew.karim.server.managers.SessionManager;
+import edu.cmu.andrew.karim.server.managers.UserManager;
 import edu.cmu.andrew.karim.server.models.ActivityProvider;
+import edu.cmu.andrew.karim.server.models.Session;
+import edu.cmu.andrew.karim.server.models.User;
 import edu.cmu.andrew.karim.server.utils.*;
 import org.bson.Document;
 import org.json.JSONObject;
 
-import javax.ws.rs.*;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -22,7 +29,7 @@ import java.util.ArrayList;
 @Path("/activityProviderData")
 public class LoadActivityProviderDataHttpInterface extends HttpInterface {
     private ObjectWriter ow;
-    private MongoCollection<Document>  activityCollection = null;
+    private MongoCollection<Document> activityProviderCollection = null;
 
     public LoadActivityProviderDataHttpInterface() {
         ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
@@ -30,9 +37,12 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
     @POST
     //@Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public AppResponse postActivityProvider(){
+    public AppResponse postActivityProvider(@Context HttpHeaders headers){
         try{
-
+            Session session = SessionManager.getInstance().getSessionForToken(headers);
+            ArrayList<User> user = UserManager.getInstance().getUserById(session.getUserId());
+            if(!session.getUserId().equals(user.get(0).getId()))
+                throw new AppUnauthorizedException(70,"Invalid user id");
             for (int i = 0; i < 10; i++) {
                 if(i==0) {
                     ActivityProvider newactivityprovider = new ActivityProvider(
@@ -42,7 +52,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Techo Solutions",
                             "09-6161234",
                             "096-16-1234",
-                            "663 Patterson Road",
+                            "663+Patterson+Road",
                             "Apt 0",
                             "Brooklyn",
                             "NY",
@@ -51,9 +61,10 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "0.2",
                             "Visa",
                             "4539 1282 2152 8459",
-                            "578"
+                            "578",
+                            "5de46d0936712a6fbaabffbf"
                     );
-                    ActivityProviderManager.getInstance().createActivityProvider(newactivityprovider);
+                    ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
                 if(i==1) {
                     ActivityProvider newactivityprovider = new ActivityProvider(
@@ -63,7 +74,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Piccolo Mondo",
                             "54-3101234",
                             "543-10-1234",
-                            "2082 Illinois Avenue",
+                            "2082+Illinois+Avenue",
                             "Apt 1",
                             "Portland",
                             "OR",
@@ -72,9 +83,10 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "0.2",
                             "MasterCard",
                             "5209 3070 4056 5936",
-                            "451"
+                            "451",
+                            "5de46d0936712a6fbaabffbf"
                     );
-                    ActivityProviderManager.getInstance().createActivityProvider(newactivityprovider);
+                    ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
 
                 if(i==2) {
@@ -85,18 +97,19 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "National Shirt Shop",
                             "77-1301234",
                             "771-30-1234",
-                            "28 Wyatt Street",
+                            "28+Wyatt+Street",
                             "APT 2",
-                            "West Palm Beach",
+                            "West+Palm+Beach",
                             "FL",
                             "561-534-2507",
                             "JosephIAlvarado@rhyta.com",
                             "0.2",
                             "Master Card",
                             "5353 4988 4821 0561",
-                            "488"
+                            "488",
+                            "5de46d0936712a6fbaabffbf"
                     );
-                    ActivityProviderManager.getInstance().createActivityProvider(newactivityprovider);
+                    ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
                 if(i==3) {
                     ActivityProvider newactivityprovider = new ActivityProvider(
@@ -106,7 +119,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Star Interior Design",
                             "36-0201234",
                             "360-20-1234",
-                            "416 Lewis Street",
+                            "416+Lewis+Street",
                             "APT 3",
                             "Chicago",
                             "IL",
@@ -115,9 +128,10 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "0.2",
                             "Visa",
                             "5360 9913 3483 4317",
-                            "218"
+                            "218",
+                            "5de46d0936712a6fbaabffbf"
                     );
-                    ActivityProviderManager.getInstance().createActivityProvider(newactivityprovider);
+                    ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
 
                 if(i==4) {
@@ -128,7 +142,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Al's Auto Parts",
                             "62-8381234",
                             "628-38-1234",
-                            "4112 Adams Drive",
+                            "4112+Adams+Drive",
                             "APT 4",
                             "Houston",
                             "TX",
@@ -137,9 +151,10 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "0.2",
                             "Visa",
                             "5147 2751 8677 2860",
-                            "238"
+                            "238",
+                            "5de46d0936712a6fbaabffbf"
                     );
-                    ActivityProviderManager.getInstance().createActivityProvider(newactivityprovider);
+                    ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
                 if(i==5) {
                     ActivityProvider newactivityprovider = new ActivityProvider(
@@ -149,7 +164,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Square Circle",
                             "44-8201234",
                             "448-20-1234",
-                            "3446 Grove Avenue",
+                            "3446+Grove+Avenue",
                             "APT 5",
                             "Clinton",
                             "OK",
@@ -158,9 +173,10 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "0.2",
                             "Visa",
                             "4929 1636 1112 6596",
-                            "093"
+                            "093",
+                             "5de46d0936712a6fbaabffbf"
                     );
-                    ActivityProviderManager.getInstance().createActivityProvider(newactivityprovider);
+                    ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
                 if(i==6) {
                     ActivityProvider newactivityprovider = new ActivityProvider(
@@ -170,18 +186,19 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Monk Home Loans",
                             "32-4761234",
                             "324-76-1234",
-                            "2509 Poplar Street",
+                            "2509+Poplar+Street",
                             "APT 6",
-                            "Burr Ridge",
+                            "Burr+Ridge",
                             "IL",
                             "708-703-2128",
                             "LouiseRSmalley@armyspy.com",
                             "0.2",
                             "Visa",
                             "4539 2774 0520 9640",
-                            "487"
+                            "487",
+                            "5de46d0936712a6fbaabffbf"
                     );
-                    ActivityProviderManager.getInstance().createActivityProvider(newactivityprovider);
+                    ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
                 if(i==7) {
                     ActivityProvider newactivityprovider = new ActivityProvider(
@@ -191,18 +208,19 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Sunny's Surplus",
                             "21-9261234",
                             "219-26-1234",
-                            "940 Bluff Street",
+                            "940+Bluff+Street",
                             "APT 7",
-                            "Mount Airy",
+                            "Mount+Airy",
                             "MD",
                             "301-799-5178",
                             "MichaelELevine@armyspy.com",
                             "0.2",
                             "Visa",
                             "4532 0637 6391 9716",
-                            "456"
+                            "456",
+                            "5de46d0936712a6fbaabffbf"
                     );
-                    ActivityProviderManager.getInstance().createActivityProvider(newactivityprovider);
+                    ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
                 if(i==8) {
                     ActivityProvider newactivityprovider = new ActivityProvider(
@@ -212,18 +230,19 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Burstein-Applebee",
                             "34-5901234",
                             "345-90-1234",
-                            "1646 Emeral Dreams Drive",
+                            "1646+Emeral+Dreams+Drive",
                             "APT 8",
-                            "Arlington Heights",
+                            "Arlington+Heights",
                             "IL",
                             "815-317-6136",
                             "IgnacioPBurnham@jourrapide.com",
                             "0.2",
                             "Master Card",
                             "4916 3752 9317 4901",
-                            "052"
+                            "052",
+                            "5de46d0936712a6fbaabffbf"
                     );
-                    ActivityProviderManager.getInstance().createActivityProvider(newactivityprovider);
+                    ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
 
                 if(i==9) {
@@ -234,7 +253,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "The Great Train Stores",
                             "49-9211234",
                             "499-21-1234",
-                            "2065 Oak Lane",
+                            "2065+Oak+Lane",
                             "APT 9",
                             "Maryville",
                             "MO",
@@ -243,9 +262,10 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "0.2",
                             "Master Card",
                             "4929 9695 6552 9100",
-                            "244"
+                            "244",
+                            "5de46d0936712a6fbaabffbf"
                     );
-                    ActivityProviderManager.getInstance().createActivityProvider(newactivityprovider);
+                    ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
 
             }
