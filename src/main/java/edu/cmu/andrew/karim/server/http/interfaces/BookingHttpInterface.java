@@ -40,7 +40,7 @@ public class BookingHttpInterface extends HttpInterface {
 
             Booking newbooking = new Booking(
                     json.getString("bookingId"),
-                    json.getString("bookindDate"),
+                    json.getString("bookingDate"),
                     json.getString("parentId"),
                     json.getString("activityId"),
                     json.getString("availabilityId"),

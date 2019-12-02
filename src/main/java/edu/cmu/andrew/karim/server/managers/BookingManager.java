@@ -48,6 +48,7 @@ public class BookingManager extends Manager {
 
             Document newDoc = new Document()
                     .append("bookingId", booking.getBookingId())
+                    .append("bookingDate",booking.getBookingDate())
                     .append("parentId", booking.getParentId())
                     .append("activityId", booking.getActivityId())
                     .append("availabilityId", booking.getAvailabilityId())
