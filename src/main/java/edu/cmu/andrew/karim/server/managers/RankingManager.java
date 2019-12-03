@@ -27,9 +27,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 import java.net.HttpURLConnection;
 import java.util.regex.Matcher;
@@ -216,6 +214,7 @@ public class RankingManager extends Manager{
 
                 }
             }
+            Collections.sort(rankingList);
             return rankingList;
 
         } catch (Exception e) {
@@ -223,4 +222,5 @@ public class RankingManager extends Manager{
         }
     }
 }
+
 

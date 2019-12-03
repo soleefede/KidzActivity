@@ -1,6 +1,13 @@
 package edu.cmu.andrew.karim.server.models;
 
-public class Ranking {
+import edu.cmu.andrew.karim.server.managers.RankingManager;
+import org.glassfish.hk2.api.Rank;
+
+import javax.swing.text.Document;
+import java.util.ArrayList;
+import java.util.Comparator;
+
+public class Ranking implements Comparable<Ranking>{
 
     String activityId;
     String activityName;
@@ -18,6 +25,7 @@ public class Ranking {
     String avgRating;
 
     public Ranking(String activityId, String activityName, String activityProviderId, String effectiveDate, String endDate, String activityCategory, String description, String photo, double price, String currency, String publishStatus, String distance, String avgRating) {
+        super();
         this.activityId = activityId;
         this.activityName = activityName;
         this.activityProviderId = activityProviderId;
@@ -151,5 +159,11 @@ public class Ranking {
 
     public void setDistance(String distance) {
         this.distance = distance;
+    }
+    
+
+    @Override
+  public int compareTo(Ranking ranking) {
+      return Integer.parseInt(this.getDistance() )- Integer.parseInt(ranking.getDistance()) ;
     }
 }
