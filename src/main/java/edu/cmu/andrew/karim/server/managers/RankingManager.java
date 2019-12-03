@@ -1,21 +1,37 @@
 package edu.cmu.andrew.karim.server.managers;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 import edu.cmu.andrew.karim.server.exceptions.AppException;
 import edu.cmu.andrew.karim.server.exceptions.AppInternalServerException;
-import edu.cmu.andrew.karim.server.models.Activity;
 import edu.cmu.andrew.karim.server.models.Ranking;
+import edu.cmu.andrew.karim.server.models.Booking;
+import edu.cmu.andrew.karim.server.models.Activity;
+import edu.cmu.andrew.karim.server.models.Review;
+import edu.cmu.andrew.karim.server.managers.ActivityManager;
 import edu.cmu.andrew.karim.server.utils.MongoPool;
+import jdk.nashorn.internal.parser.JSONParser;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.json.JSONObject;
 
+import javax.json.JsonObject;
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+import java.net.HttpURLConnection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -167,7 +183,7 @@ public class RankingManager extends Manager{
 
                     for (String s: parser1){
                         if (count == 6) {
-                            distance = parser1[count].substring(2,8);
+                            distance = parser1[count].substring(2,parser1[count].indexOf("m")-1);
                             System.out.println(distance);
                         }
                         count++;
@@ -198,6 +214,7 @@ public class RankingManager extends Manager{
 
                 }
             }
+            Collections.sort(rankingList);
             return rankingList;
 
         } catch (Exception e) {
@@ -205,4 +222,5 @@ public class RankingManager extends Manager{
         }
     }
 }
+
 
