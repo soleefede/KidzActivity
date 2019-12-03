@@ -160,7 +160,7 @@ public class Ranking implements Comparable<Ranking>{
     public void setDistance(String distance) {
         this.distance = distance;
     }
-    
+
 
     @Override
   public int compareTo(Ranking ranking) {
