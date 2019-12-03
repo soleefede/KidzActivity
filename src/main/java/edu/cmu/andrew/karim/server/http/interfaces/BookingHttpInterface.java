@@ -37,7 +37,7 @@ public class BookingHttpInterface extends HttpInterface {
         try {
             JSONObject json = null;
             json = new JSONObject(ow.writeValueAsString(request));
-
+            System.out.println("I am here ");
             Booking newbooking = new Booking(
                     json.getString("bookingId"),
                     json.getString("bookingDate"),
