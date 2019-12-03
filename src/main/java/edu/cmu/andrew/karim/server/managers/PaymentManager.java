@@ -44,9 +44,13 @@ public class PaymentManager extends Manager {
             if (newDoc != null) {
                 paymentCollection.insertOne(newDoc);
                 //String product, String subtotal, String shipping, String tax, String total
-                String payPalLink = PayPalPaymentManager.getInstance().processPayment(payment.getPaymentId(), Float.toString(payment.getTotalPrice()),
-                        "5","6","100");
+                float shipping = (float) 5.0;
+                float tax = (float) 10.0;
+                float total = payment.getTotalPrice() + shipping + tax;
+                String payPalLink = PayPalPaymentManager.getInstance().processPayment(payment.getPaymentId(), Float.toString(payment.getTotalPrice()),Float.toString(shipping) ,Float.toString(tax),Float.toString(total));
                 System.out.println(payPalLink);
+                if (payPalLink != null)
+                    updatePayment(payment.getPaymentId(),payPalLink,"Paid");
             }
             else
                 throw new AppInternalServerException(0, "Failed to create new payment");
@@ -70,8 +74,8 @@ public class PaymentManager extends Manager {
                         .append("noOfSeats", paymentDoc.getInteger("noOfSeats"))
                         .append("activityPrice", paymentDoc.getDouble("activityPrice"))
                         .append("totalPrice", paymentDoc.getDouble("totalPrice"))
-                        .append("paymentIdExternal", paymentDoc.getString("paymentIdExternal"))
-                        .append("paymentStatus", paymentDoc.getString("paymentStatus"));
+                        .append("paymentIdExternal", paymentIdExternal)
+                        .append("paymentStatus", paymentStatus);
 
 
 
