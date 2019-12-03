@@ -13,10 +13,11 @@ public class Ranking {
     double price;
     String currency;
     String publishStatus;
-    int distance;
+//    int distance;
+    String distance;
     String avgRating;
 
-    public Ranking(String activityId, String activityName, String activityProviderId, String effectiveDate, String endDate, String activityCategory, String description, String photo, double price, String currency, String publishStatus, int distance, String avgRating) {
+    public Ranking(String activityId, String activityName, String activityProviderId, String effectiveDate, String endDate, String activityCategory, String description, String photo, double price, String currency, String publishStatus, String distance, String avgRating) {
         this.activityId = activityId;
         this.activityName = activityName;
         this.activityProviderId = activityProviderId;
@@ -128,13 +129,13 @@ public class Ranking {
         this.publishStatus = publishStatus;
     }
 
-    public int getDistance() {
-        return distance;
-    }
-
-    public void setDistance(int distance) {
-        this.distance = distance;
-    }
+//    public int getDistance() {
+//        return distance;
+//    }
+//
+//    public void setDistance(int distance) {
+//        this.distance = distance;
+//    }
 
     public String getAvgRating() {
         return avgRating;
@@ -142,5 +143,13 @@ public class Ranking {
 
     public void setAvgRating(String avgRating) {
         this.avgRating = avgRating;
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
     }
 }

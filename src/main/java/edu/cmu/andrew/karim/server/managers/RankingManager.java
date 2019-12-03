@@ -62,12 +62,12 @@ public class RankingManager extends Manager{
 
 
     public ArrayList<Ranking> getRankingList() throws AppException {
-        try{
+        try {
 
             // Return a list
             ArrayList<Ranking> rankingList = new ArrayList<>();
             FindIterable<Document> rankingDocs = activityCollection.find();
-            for(Document rankingDoc: rankingDocs) {
+            for (Document rankingDoc : rankingDocs) {
                 Ranking ranking = new Ranking(
                         rankingDoc.getString("activityId").toString(),
                         rankingDoc.getString("activityName").toString(),
@@ -80,7 +80,7 @@ public class RankingManager extends Manager{
                         rankingDoc.getDouble("price"),
                         rankingDoc.getString("currency"),
                         rankingDoc.getString("publishStatus"),
-                        0,
+                        "",
                         rankingDoc.getString("avgRating")
                 );
                 rankingList.add(ranking);
@@ -92,156 +92,81 @@ public class RankingManager extends Manager{
                 int avgRatings = 0;
 
                 FindIterable<Document> bookingDocs = bookingCollection.find(eq("activityId", activityId));
-                for(Document bookingDoc: bookingDocs){
+                for (Document bookingDoc : bookingDocs) {
                     String bookingId = bookingDoc.getString("bookingId").toString();
-//                    System.out.println("bookingId: "+ bookingId + "activityId: "+ activityId);
                     Document reviewDoc = reviewCollection.find(eq("bookingId", bookingId)).first();
-//                    System.out.println("review:"+ reviewDoc.getString("reviewId"));
-                    if (reviewDoc!=null) {
+                    if (reviewDoc != null) {
                         sumRatings += Integer.parseInt(reviewDoc.getString("ratings"));
-                       countRatings++;
+                        countRatings++;
                     }
 
-                }
-                if (countRatings > 0) {
-                    avgRatings = sumRatings / countRatings;
-//                    System.out.println("activityId:"+ activityId+"Sum: "+ sumRatings+"countRate:"+countRatings);
-                }
-                String avgRating = Double.toString(avgRatings);
-//                System.out.println(activityId+": "+avgRating);
 
-                // Post aveRatings back
-                Bson filter = new Document("activityId", activityId);
-                Document activityDoc = activityCollection.find(eq("activityId", activityId)).first();
-                Bson newValue = new Document()
-                        .append("activityId", activityDoc.getString("activityId"))
-                        .append("activityName", activityDoc.getString("activityName"))
-                        .append("activityProviderId", activityDoc.getString("activityProviderId"))
-                        .append("effectiveDate", activityDoc.getString("effectiveDate"))
-                        .append("endDate", activityDoc.getString("endDate"))
-                        .append("activityCategory", activityDoc.getString("activityCategory"))
-                        .append("description", activityDoc.getString("description"))
-                        .append("photo", activityDoc.getString("photo"))
-                        .append("price", activityDoc.getDouble("price"))
-                        .append("currency", activityDoc.getString("currency"))
-                        .append("publishStatus", activityDoc.getString("publishStatus"))
-                        .append("avgRating" , avgRating);
-
-                Bson updateOperationDocument = new Document("$set", newValue);
-                if (newValue != null) {
-                    activityCollection.updateOne(filter, updateOperationDocument);
-                }
-                else
-                    throw new AppInternalServerException(0, "Failed to update average reviews");
-
-                // Get Activity and Activity Provider Address
-//                System.out.println(rankingDoc.getString("activityProviderId"));
-//                String address="";
-//                Document activityAddressDoc = activityProviderCollection.find(eq("activityProviderId", rankingDoc.getString("activityProviderId"))).first();
-//                if (activityAddressDoc != null) {
-//                    address = activityAddressDoc.getString("address1");
-//                    address += "," + activityAddressDoc.getString("city");
-//                    address += "," + activityAddressDoc.getString("state");
-//                    // Get coordinates of Activity Provider
-////                    System.out.println("address:"+address);
-////                    String key = "AIzaSyB7smrK4e9AABXv1cLCosoTkArFjpm_Z0k";
-////                    String destination= location;
-////                    URL url = new URL("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins="+address+"&destinations="+destination+"&key="+key);
-////                    System.out.println("url:"+url.toString());
-////                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
-////                    con.setRequestMethod("GET");
-////                    con.setRequestProperty("Content-Type", "application/json");
-////                    int status = con.getResponseCode();
-////                    System.out.println("Status code: "+status);
-////                    BufferedReader in = new BufferedReader(
-////                            new InputStreamReader(con.getInputStream()));
-////                    String inputLine;
-////                    StringBuffer content = new StringBuffer();
-//
-////                    while ((inputLine = in.readLine()) != null) {
-////                        content.append(inputLine);
-//                    }
-//                    String[] parser1 = content.toString().split(":");
-//                    int count = 0;
-//                    for (String s: parser1){
-//                        System.out.println(activityId+":"+s);
-//                        count++;
-//                        if (count%13 == 8){
-//                            String[] distanceString = parser1[count].split(" ");
-//                            int distanceValue = Integer.parseInt(distanceString[0]);
-//                            Ranking ranking = new Ranking(
-//                                rankingDoc.getString("activityId").toString(),
-//                                rankingDoc.getString("activityName").toString(),
-//                                rankingDoc.getString("activityProviderId"),
-//                                rankingDoc.getString("effectiveDate"),
-//                                rankingDoc.getString("endDate"),
-//                                rankingDoc.getString("activityCategory"),
-//                                rankingDoc.getString("description"),
-//                                rankingDoc.getString("photo"),
-//                                rankingDoc.getDouble("price"),
-//                                rankingDoc.getString("currency"),
-//                                rankingDoc.getString("publishStatus"),
-//                                distanceValue
-//                            );
-//                            rankingList.add(ranking);
-//                            System.out.println(ranking.getDistance());
-//                        }
+                    if (countRatings > 0) {
+                        avgRatings = sumRatings / countRatings;
                     }
-//                    in.close();
-//                    con.disconnect();
-//                }
-//            }
-            return rankingList;
-        } catch(Exception e){
+                    String avgRating = Double.toString(avgRatings);
+
+                    // Post aveRatings back
+                    Bson filter = new Document("activityId", activityId);
+                    Document activityDoc = activityCollection.find(eq("activityId", activityId)).first();
+                    Bson newValue = new Document()
+                            .append("activityId", activityDoc.getString("activityId"))
+                            .append("activityName", activityDoc.getString("activityName"))
+                            .append("activityProviderId", activityDoc.getString("activityProviderId"))
+                            .append("effectiveDate", activityDoc.getString("effectiveDate"))
+                            .append("endDate", activityDoc.getString("endDate"))
+                            .append("activityCategory", activityDoc.getString("activityCategory"))
+                            .append("description", activityDoc.getString("description"))
+                            .append("photo", activityDoc.getString("photo"))
+                            .append("price", activityDoc.getDouble("price"))
+                            .append("currency", activityDoc.getString("currency"))
+                            .append("publishStatus", activityDoc.getString("publishStatus"))
+                            .append("avgRating", avgRating);
+
+                    Bson updateOperationDocument = new Document("$set", newValue);
+                    if (newValue != null) {
+                        activityCollection.updateOne(filter, updateOperationDocument);
+                    } else
+                        throw new AppInternalServerException(0, "Failed to update average reviews");
+                }
+                return rankingList;
+                }
+        } catch (Exception e) {
             throw handleException("Get Ranking List", e);
         }
+        return null;
     }
 
-    public ArrayList<Ranking> calculateDistance(String location) throws AppException {
-        try{
+
+    public ArrayList<Ranking> calculateDistance (String location) throws AppException {
+        try {
 
             // Return a list
+            String distance = "";
             ArrayList<Ranking> rankingList = new ArrayList<>();
-            FindIterable<Document> rankingDocs = activityCollection.find();
-            for(Document rankingDoc: rankingDocs) {
-                Ranking ranking = new Ranking(
-                        rankingDoc.getString("activityId").toString(),
-                        rankingDoc.getString("activityName").toString(),
-                        rankingDoc.getString("activityProviderId"),
-                        rankingDoc.getString("effectiveDate"),
-                        rankingDoc.getString("endDate"),
-                        rankingDoc.getString("activityCategory"),
-                        rankingDoc.getString("description"),
-                        rankingDoc.getString("photo"),
-                        rankingDoc.getDouble("price"),
-                        rankingDoc.getString("currency"),
-                        rankingDoc.getString("publishStatus"),
-                        0,
-                        rankingDoc.getString("avgRating")
-                );
-                rankingList.add(ranking);
-
+            ArrayList<Activity> activityList = new ArrayList<>();
+            FindIterable<Document> activityDocs = activityCollection.find();
+            for (Document activityDoc : activityDocs) {
+                distance="";
 
                 // Get Activity and Activity Provider Address
-                String activityId = rankingDoc.getString("activityId");
-//                System.out.println(rankingDoc.getString("activityProviderId"));
-                String address="";
-                Document activityAddressDoc = activityProviderCollection.find(eq("activityProviderId", rankingDoc.getString("activityProviderId"))).first();
+                String activityId = activityDoc.getString("activityId");
+                System.out.println(activityId);
+                String address = "";
+                Document activityAddressDoc = activityProviderCollection.find(eq("activityProviderId", activityDoc.getString("activityProviderId"))).first();
                 if (activityAddressDoc != null) {
                     address = activityAddressDoc.getString("address1");
                     address += "," + activityAddressDoc.getString("city");
                     address += "," + activityAddressDoc.getString("state");
                     // Get coordinates of Activity Provider
-//                    System.out.println("address:"+address);
+                    System.out.println("address:"+address);
                     String key = "AIzaSyB7smrK4e9AABXv1cLCosoTkArFjpm_Z0k";
-                    String destination= location;
-                    URL url = new URL("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins="+address+"&destinations="+destination+"&key="+key);
-//                    System.out.println("url:"+url.toString());
+                    String destination = location;
+                    URL url = new URL("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=" + address + "&destinations=" + destination + "&key=" + key);
                     HttpURLConnection con = (HttpURLConnection) url.openConnection();
                     con.setRequestMethod("GET");
                     con.setRequestProperty("Content-Type", "application/json");
                     int status = con.getResponseCode();
-//                    System.out.println("Status code: "+status);
 
                     // Parse Json Data
                     BufferedReader in = new BufferedReader(
@@ -254,39 +179,48 @@ public class RankingManager extends Manager{
                     }
                     System.out.println(content);
 
-//                    String[] parser1 = content.toString().split(":");
-//                    int count = 0;
-//                    for (String s: parser1){
-//                        System.out.println(activityId+":"+s);
-//                        count++;
-//                        if (count%13 == 8){
-//                            String[] distanceString = parser1[count].split(" ");
-//                            int distanceValue = Integer.parseInt(distanceString[0]);
-//                            Ranking ranking = new Ranking(
-//                                rankingDoc.getString("activityId").toString(),
-//                                rankingDoc.getString("activityName").toString(),
-//                                rankingDoc.getString("activityProviderId"),
-//                                rankingDoc.getString("effectiveDate"),
-//                                rankingDoc.getString("endDate"),
-//                                rankingDoc.getString("activityCategory"),
-//                                rankingDoc.getString("description"),
-//                                rankingDoc.getString("photo"),
-//                                rankingDoc.getDouble("price"),
-//                                rankingDoc.getString("currency"),
-//                                rankingDoc.getString("publishStatus"),
-//                                distanceValue
-//                            );
-//                            rankingList.add(ranking);
-//                            System.out.println(ranking.getDistance());
-//                        }
-//                    }
-//                    in.close();
-//                    con.disconnect();
+                    String[] parser1 = content.toString().split(":");
+                    int count = 0;
+
+
+                    for (String s: parser1){
+                        if (count == 6) {
+                            distance = parser1[count].substring(2,8);
+                            System.out.println(distance);
+                        }
+                        count++;
+
+
+                        }
+                    in.close();
+                    con.disconnect();
+
+                    System.out.println("Ranking obj:"+distance);
+                    Ranking ranking = new Ranking(
+                            activityId,
+                            activityDoc.getString("activityName").toString(),
+                            activityDoc.getString("activityProviderId"),
+                            activityDoc.getString("effectiveDate"),
+                            activityDoc.getString("endDate"),
+                            activityDoc.getString("activityCategory"),
+                            activityDoc.getString("description"),
+                            activityDoc.getString("photo"),
+                            activityDoc.getDouble("price"),
+                            activityDoc.getString("currency"),
+                            activityDoc.getString("publishStatus"),
+                            distance,
+                            activityDoc.getString("avgRating")
+                    );
+                    rankingList.add(ranking);
+
+
                 }
             }
             return rankingList;
-        } catch(Exception e){
+
+        } catch (Exception e) {
             throw handleException("Get Ranking List", e);
         }
     }
 }
+
