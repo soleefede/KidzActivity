@@ -15,6 +15,7 @@ import org.bson.Document;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
@@ -30,13 +31,14 @@ public class LoadActivityDataHttpInterface extends HttpInterface {
         ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
     }
     @POST
+    @Path("/{userId}")
     //@Consumes({MediaType.APPLICATION_JSON})
    @Produces({MediaType.APPLICATION_JSON})
-    public AppResponse postActivity(@Context HttpHeaders headers){
+    public AppResponse postActivity(@Context HttpHeaders headers, @PathParam("userId") String userId){
         try{
             Session session = SessionManager.getInstance().getSessionForToken(headers);
             ArrayList<User> user = UserManager.getInstance().getUserById(session.getUserId());
-            String userId = "5de46d0936712a6fbaabffbf";
+            //String userId = "5de46d0936712a6fbaabffbf";
             if(!(session.getUserId().equals(userId)))
                 throw new AppUnauthorizedException(70,"Invalid user id");
             for (int i = 0; i < 10; i++) {
