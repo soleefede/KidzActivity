@@ -164,6 +164,6 @@ public class Ranking implements Comparable<Ranking>{
 
     @Override
   public int compareTo(Ranking ranking) {
-      return Integer.parseInt(this.getDistance() )- Integer.parseInt(ranking.getDistance()) ;
+        return Math.round(Integer.parseInt(this.getDistance()))- Math.round(Integer.parseInt(ranking.getDistance()));
     }
 }

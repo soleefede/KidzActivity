@@ -117,10 +117,6 @@ public class ActivityProviderManager extends Manager{
 
     public void deleteActivityProvider(@Context HttpHeaders headers, String activityProviderId) throws AppException {
         try {
-            Session session = SessionManager.getInstance().getSessionForToken(headers);
-            ArrayList<User> user = UserManager.getInstance().getUserById(session.getUserId());
-            if(!session.getUserId().equals(activityProviderId))
-                throw new AppUnauthorizedException(70,"Invalid user id");
 
             Bson filter = new Document("activityProviderId", activityProviderId);
             activityProviderCollection.deleteOne(filter);
