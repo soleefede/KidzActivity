@@ -66,25 +66,10 @@ public class RankingManager extends Manager{
             ArrayList<Ranking> rankingList = new ArrayList<>();
             FindIterable<Document> rankingDocs = activityCollection.find();
             for (Document rankingDoc : rankingDocs) {
-                Ranking ranking = new Ranking(
-                        rankingDoc.getString("activityId").toString(),
-                        rankingDoc.getString("activityName").toString(),
-                        rankingDoc.getString("activityProviderId"),
-                        rankingDoc.getString("effectiveDate"),
-                        rankingDoc.getString("endDate"),
-                        rankingDoc.getString("activityCategory"),
-                        rankingDoc.getString("description"),
-                        rankingDoc.getString("photo"),
-                        rankingDoc.getDouble("price"),
-                        rankingDoc.getString("currency"),
-                        rankingDoc.getString("publishStatus"),
-                        "",
-                        rankingDoc.getString("avgRating")
-                );
-                rankingList.add(ranking);
 
                 // Calculate average rating from Booking and Review
                 String activityId = rankingDoc.getString("activityId").toString();
+                System.out.println("activityId///:" +activityId);
                 int sumRatings = 0;
                 int countRatings = 0;
                 int avgRatings = 0;
@@ -96,6 +81,7 @@ public class RankingManager extends Manager{
                     if (reviewDoc != null) {
                         sumRatings += Integer.parseInt(reviewDoc.getString("ratings"));
                         countRatings++;
+                        System.out.println("reviewDoc is not empty.");
                     }
 
 
@@ -103,6 +89,8 @@ public class RankingManager extends Manager{
                         avgRatings = sumRatings / countRatings;
                     }
                     String avgRating = Double.toString(avgRatings);
+                    System.out.println("ActivityId:"+activityId+", avgrating:"+avgRating);
+                    System.out.println("count:"+countRatings);
 
                     // Post aveRatings back
                     Bson filter = new Document("activityId", activityId);
@@ -127,12 +115,12 @@ public class RankingManager extends Manager{
                     } else
                         throw new AppInternalServerException(0, "Failed to update average reviews");
                 }
-                return rankingList;
+
                 }
+            return rankingList;
         } catch (Exception e) {
             throw handleException("Get Ranking List", e);
         }
-        return null;
     }
 
 
