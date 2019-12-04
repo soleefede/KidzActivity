@@ -11,6 +11,8 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class PaymentManager extends Manager {
     public static PaymentManager _self;
     private MongoCollection<Document> paymentCollection;
@@ -59,6 +61,29 @@ public class PaymentManager extends Manager {
             throw handleException("Create Payment", e);
         }
 
+    }
+
+    public ArrayList<Payment> getPayments(String paymentId) throws AppException {
+        try{
+            ArrayList<Payment> paymentList = new ArrayList<>();
+            FindIterable<Document> paymentDocs = paymentCollection.find().filter(Filters.eq("paymentId",paymentId));
+
+            // FindIterable<Document> bookingDocs = bookingCollection.find();
+            for(Document paymentDoc: paymentDocs) {
+
+                Payment payment = new Payment(
+                        paymentDoc.getString("paymentId").toString(),
+                        paymentDoc.getInteger("noOfSeats"), 0,
+                        0,
+                        paymentDoc.getString("paymentIdExternal"),
+                        paymentDoc.getString("paymentStatus")
+                );
+                paymentList.add(payment);
+            }
+            return new ArrayList<>(paymentList);
+        } catch(Exception e){
+            throw handleException("Get Payment List", e);
+        }
     }
 
     public void updatePayment( String paymentId, String paymentIdExternal , String paymentStatus) throws AppException {
