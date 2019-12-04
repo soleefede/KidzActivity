@@ -61,7 +61,7 @@ public class BookingHttpInterface extends HttpInterface {
     }
 
     @GET
-    //@Path("/{activityId}")
+   
     @Produces({MediaType.APPLICATION_JSON})
     public AppResponse getBooking(@Context HttpHeaders headers, @QueryParam("activityId") String activityId){
 
