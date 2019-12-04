@@ -4,18 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.mongodb.client.MongoCollection;
 import edu.cmu.andrew.karim.server.exceptions.AppUnauthorizedException;
-import edu.cmu.andrew.karim.server.http.exceptions.HttpBadRequestException;
 import edu.cmu.andrew.karim.server.http.responses.AppResponse;
-import edu.cmu.andrew.karim.server.http.utils.PATCH;
 import edu.cmu.andrew.karim.server.managers.ActivityProviderManager;
 import edu.cmu.andrew.karim.server.managers.SessionManager;
 import edu.cmu.andrew.karim.server.managers.UserManager;
 import edu.cmu.andrew.karim.server.models.ActivityProvider;
 import edu.cmu.andrew.karim.server.models.Session;
 import edu.cmu.andrew.karim.server.models.User;
-import edu.cmu.andrew.karim.server.utils.*;
 import org.bson.Document;
-import org.json.JSONObject;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;

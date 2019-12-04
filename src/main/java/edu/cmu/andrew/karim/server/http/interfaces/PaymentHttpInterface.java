@@ -3,15 +3,20 @@ package edu.cmu.andrew.karim.server.http.interfaces;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.mongodb.client.MongoCollection;
+import edu.cmu.andrew.karim.server.http.exceptions.HttpBadRequestException;
 import edu.cmu.andrew.karim.server.http.responses.AppResponse;
 import edu.cmu.andrew.karim.server.http.utils.PATCH;
 import edu.cmu.andrew.karim.server.managers.PaymentManager;
 import edu.cmu.andrew.karim.server.models.Payment;
+import edu.cmu.andrew.karim.server.utils.AppLogger;
 import org.bson.Document;
 import org.json.JSONObject;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
 
 
 @Path("/payment")
@@ -47,6 +52,30 @@ public class PaymentHttpInterface extends HttpInterface {
 
         } catch (Exception e) {
             throw handleException("POST users", e);
+        }
+
+    }
+
+
+    @GET
+    @Path("/{bookingId}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public AppResponse getPayments(@Context HttpHeaders headers, @PathParam("bookingId") String bookingId){
+
+        try{
+            AppLogger.info("Got an API call");
+            ArrayList<Payment> payments  = null;
+
+            if(("PYMT" + bookingId)!= null)
+                //System.out.println("I am here : " +  );
+                payments = PaymentManager.getInstance().getPayments("PYMT" + bookingId );
+
+            if( payments != null)
+                return new AppResponse(payments);
+            else
+                throw new HttpBadRequestException(0, "Problem with getting payments");
+        }catch (Exception e){
+            throw handleException("GET /availability/{activityId}", e);
         }
 
     }
