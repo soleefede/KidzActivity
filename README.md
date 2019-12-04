@@ -1,9 +1,10 @@
 # KidzActivity
-Initial commit.
+Project final.
+Document submission: https://docs.google.com/document/d/1OfSubPFn2sPoNbXx5Ard7WN_vZEZ1HiFfJCtHKLXS9o/edit?usp=sharing
 
 Resources implementation:
-- Activity @Anita Polouse
-https://docs.google.com/document/d/1oawkp64H6OpGyBqCsUa-E-dHuOasl3IxD9bd-tg5Tg8/edit?usp=sharing
+- Anita Polouse
+Activity, Availability, Booking, Payment, PayPalPayment, Review, Session, User
 
-- Activity Provider @Emily Hsiao 
-https://docs.google.com/document/d/1nMpBx7JL1P8mow8PMyL3vHYIK03hH5-EtjhGDRoI_Ws/edit?usp=sharing
+- Emily Hsiao 
+Activity Provider, Parent, Ranking
