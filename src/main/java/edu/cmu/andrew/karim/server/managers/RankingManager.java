@@ -152,6 +152,7 @@ public class RankingManager extends Manager{
                 System.out.println(activityId);
                 String address = "";
                 Document activityAddressDoc = activityProviderCollection.find(eq("activityProviderId", activityDoc.getString("activityProviderId"))).first();
+                System.out.println("Test, activityProviderId: "+ activityDoc.getString("activityProviderId"));
                 if (activityAddressDoc != null) {
                     address = activityAddressDoc.getString("address1");
                     address += "," + activityAddressDoc.getString("city");
@@ -184,7 +185,14 @@ public class RankingManager extends Manager{
                     for (String s: parser1){
                         if (count == 6) {
                             distance = parser1[count].substring(2,parser1[count].indexOf("m")-1);
-                            System.out.println(distance);
+//                            if (!(distance.indexOf(".")==-1)) {
+//                                distance = distance.substring(0, distance.indexOf(".") - 1);
+//                            }
+                            distance = distance.replace(",","");
+                            float a = Float.parseFloat(distance);
+                            int b= (int)a;
+                            distance = String.valueOf(b);
+                            System.out.println(a);
                         }
                         count++;
 
