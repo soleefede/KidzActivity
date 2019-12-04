@@ -73,7 +73,8 @@ public class PaymentManager extends Manager {
 
                 Payment payment = new Payment(
                         paymentDoc.getString("paymentId").toString(),
-                        paymentDoc.getInteger("noOfSeats"), 0,
+                        paymentDoc.getInteger("noOfSeats"),
+                        0,
                         0,
                         paymentDoc.getString("paymentIdExternal"),
                         paymentDoc.getString("paymentStatus")
