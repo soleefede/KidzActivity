@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
@@ -37,11 +38,14 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
     @POST
     //@Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public AppResponse postActivityProvider(@Context HttpHeaders headers){
+    @Path("/{userId}")
+    public AppResponse postActivityProvider(@Context HttpHeaders headers, @PathParam("userId") String userId){
         try{
+
+//            String userId ="5de46d0936712a6fbaabffbf";
             Session session = SessionManager.getInstance().getSessionForToken(headers);
             ArrayList<User> user = UserManager.getInstance().getUserById(session.getUserId());
-            if(!session.getUserId().equals(user.get(0).getId()))
+            if(!session.getUserId().equals(userId))
                 throw new AppUnauthorizedException(70,"Invalid user id");
             for (int i = 0; i < 10; i++) {
                 if(i==0) {
@@ -62,7 +66,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Visa",
                             "4539 1282 2152 8459",
                             "578",
-                            "5de46d0936712a6fbaabffbf"
+                            userId
                     );
                     ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
@@ -84,7 +88,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "MasterCard",
                             "5209 3070 4056 5936",
                             "451",
-                            "5de46d0936712a6fbaabffbf"
+                            userId
                     );
                     ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
@@ -107,7 +111,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Master Card",
                             "5353 4988 4821 0561",
                             "488",
-                            "5de46d0936712a6fbaabffbf"
+                            userId
                     );
                     ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
@@ -129,7 +133,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Visa",
                             "5360 9913 3483 4317",
                             "218",
-                            "5de46d0936712a6fbaabffbf"
+                            userId
                     );
                     ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
@@ -152,7 +156,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Visa",
                             "5147 2751 8677 2860",
                             "238",
-                            "5de46d0936712a6fbaabffbf"
+                            userId
                     );
                     ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
@@ -174,7 +178,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Visa",
                             "4929 1636 1112 6596",
                             "093",
-                             "5de46d0936712a6fbaabffbf"
+                             userId
                     );
                     ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
@@ -196,7 +200,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Visa",
                             "4539 2774 0520 9640",
                             "487",
-                            "5de46d0936712a6fbaabffbf"
+                            userId
                     );
                     ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
@@ -218,7 +222,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Visa",
                             "4532 0637 6391 9716",
                             "456",
-                            "5de46d0936712a6fbaabffbf"
+                            userId
                     );
                     ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
@@ -240,7 +244,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Master Card",
                             "4916 3752 9317 4901",
                             "052",
-                            "5de46d0936712a6fbaabffbf"
+                            userId
                     );
                     ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
@@ -263,7 +267,7 @@ public class LoadActivityProviderDataHttpInterface extends HttpInterface {
                             "Master Card",
                             "4929 9695 6552 9100",
                             "244",
-                            "5de46d0936712a6fbaabffbf"
+                            userId
                     );
                     ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
                 }
