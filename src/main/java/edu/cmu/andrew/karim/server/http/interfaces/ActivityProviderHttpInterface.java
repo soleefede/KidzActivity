@@ -32,7 +32,7 @@ public class ActivityProviderHttpInterface extends HttpInterface{
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public AppResponse postActivityProvider(Object request){
+    public AppResponse postActivityProvider(@Context HttpHeaders headers, Object request){
 
         try{
             JSONObject json = null;
@@ -54,9 +54,10 @@ public class ActivityProviderHttpInterface extends HttpInterface{
                     json.getString("commissionPercentage"),
                     json.getString("bankName"),
                     json.getString("bankAccNumber"),
-                    json.getString("pinCode")
+                    json.getString("pinCode"),
+                    json.getString("updateUser")
             );
-            ActivityProviderManager.getInstance().createActivityProvider(newactivityprovider);
+            ActivityProviderManager.getInstance().createActivityProvider(headers, newactivityprovider);
             return new AppResponse("Insert Successful");
 
         }catch (Exception e){
@@ -121,7 +122,7 @@ public class ActivityProviderHttpInterface extends HttpInterface{
 
         try{
             AppLogger.info("Got an API call");
-            ArrayList<ActivityProvider> activityProviders = ActivityProviderManager.getInstance().getActivityProviderById(activityProviderId);
+            ArrayList<ActivityProvider> activityProviders = ActivityProviderManager.getInstance().getActivityProviderById(headers, activityProviderId);
 
             if(activityProviders != null)
                 return new AppResponse(activityProviders);
@@ -139,7 +140,7 @@ public class ActivityProviderHttpInterface extends HttpInterface{
     @Path("/{activityProviderId}")
     @Consumes({ MediaType.APPLICATION_JSON})
     @Produces({ MediaType.APPLICATION_JSON})
-    public AppResponse patchUsers(Object request, @PathParam("activityProviderId") String activityProviderId){
+    public AppResponse patchUsers(@Context HttpHeaders headers, Object request, @PathParam("activityProviderId") String activityProviderId){
 
         JSONObject json = null;
 
@@ -161,10 +162,11 @@ public class ActivityProviderHttpInterface extends HttpInterface{
                     json.getString("commissionPercentage"),
                     json.getString("bankName"),
                     json.getString("bankAccNumber"),
-                    json.getString("pinCode")
+                    json.getString("pinCode"),
+                    json.getString("updateUser")
             );
 
-            ActivityProviderManager.getInstance().updateActivityProvider(activityProvider);
+            ActivityProviderManager.getInstance().updateActivityProvider(headers, activityProvider);
 
         }catch (Exception e){
             throw handleException("PATCH activityProvider/{activityProviderId}", e);
@@ -180,10 +182,10 @@ public class ActivityProviderHttpInterface extends HttpInterface{
     @Path("/{activityProviderId}")
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
-    public AppResponse deleteUsers(@PathParam("activityProviderId") String activityProviderId){
+    public AppResponse deleteUsers(@Context HttpHeaders headers, @PathParam("activityProviderId") String activityProviderId){
 
         try{
-            ActivityProviderManager.getInstance().deleteActivityProvider(activityProviderId);
+            ActivityProviderManager.getInstance().deleteActivityProvider(headers, activityProviderId);
             return new AppResponse("Delete Successful");
         }catch (Exception e){
             throw handleException("DELETE activityProvider/{activityProviderId}", e);

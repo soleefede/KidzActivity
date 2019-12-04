@@ -9,6 +9,7 @@ import edu.cmu.andrew.karim.server.exceptions.AppException;
 import edu.cmu.andrew.karim.server.exceptions.AppInternalServerException;
 import edu.cmu.andrew.karim.server.exceptions.AppUnauthorizedException;
 import edu.cmu.andrew.karim.server.models.Activity;
+import edu.cmu.andrew.karim.server.models.Ranking;
 import edu.cmu.andrew.karim.server.models.Session;
 import edu.cmu.andrew.karim.server.models.User;
 import edu.cmu.andrew.karim.server.utils.MongoPool;
@@ -45,7 +46,7 @@ public class ActivityManager extends Manager {
         try{
             Session session = SessionManager.getInstance().getSessionForToken(headers);
             ArrayList<User> user = UserManager.getInstance().getUserById(session.getUserId());
-            if(!session.getUserId().equals(user.get(0).getId()))
+            if(!session.getUserId().equals(activity.getUpdateUser()))
                 throw new AppUnauthorizedException(70,"Invalid user id");
 
             JSONObject json = new JSONObject(activity);
@@ -61,7 +62,8 @@ public class ActivityManager extends Manager {
                     .append("photo",activity.getPhoto())
                     .append("price",activity.getPrice())
                     .append("currency",activity.getCurrency())
-                    .append("publishStatus",activity.getPublishStatus());;
+                    .append("publishStatus",activity.getPublishStatus())
+                    .append("updateUser", activity.getUpdateUser());
             if (newDoc != null)
                 activityCollection.insertOne(newDoc);
             else
@@ -90,7 +92,8 @@ public class ActivityManager extends Manager {
                         activityDoc.getDouble("price"),
                         activityDoc.getString("currency"),
                         activityDoc.getString("publishStatus"),
-                        activityDoc.getString("avgRating")
+                        activityDoc.getString("avgRating"),
+                        activityDoc.getString("updateUser")
                 );
                 activityList.add(activity);
             }
@@ -99,6 +102,40 @@ public class ActivityManager extends Manager {
             throw handleException("Get Activity List", e);
         }
     }
+
+
+    public ArrayList<Ranking> getActivityListByDistance(String location) throws AppException {
+        try{
+            ArrayList<Activity> activityList = new ArrayList<>();
+            ArrayList<Ranking> rankedList = new ArrayList<>();
+            FindIterable<Document> activityDocs = activityCollection.find();
+            for(Document activityDoc: activityDocs) {
+                Activity activity = new Activity(
+                        activityDoc.getString("activityId").toString(),
+                        activityDoc.getString("activityName").toString(),
+                        activityDoc.getString("activityProviderId"),
+                        activityDoc.getString("effectiveDate"),
+                        activityDoc.getString("endDate"),
+                        activityDoc.getString("activityCategory"),
+                        activityDoc.getString("description"),
+                        activityDoc.getString("photo"),
+                        activityDoc.getDouble("price"),
+                        activityDoc.getString("currency"),
+                        activityDoc.getString("publishStatus"),
+                        activityDoc.getString("avgRating"),
+                        activityDoc.getString("updateUser")
+                );
+                activityList.add(activity);
+            }
+
+            rankedList = RankingManager.getInstance().calculateDistance(location);
+
+            return new ArrayList<>(rankedList);
+        } catch(Exception e){
+            throw handleException("Get Activity List", e);
+        }
+    }
+
 
     public ArrayList<Activity> getActivityListSorted(String sortby) throws AppException {
         try{
@@ -119,7 +156,8 @@ public class ActivityManager extends Manager {
                         activityDoc.getDouble("price"),
                         activityDoc.getString("currency"),
                         activityDoc.getString("publishStatus"),
-                        activityDoc.getString("avgRating")
+                        activityDoc.getString("avgRating"),
+                        activityDoc.getString("updateUser")
                 );
                 activityList.add(activity);
             }
@@ -148,7 +186,8 @@ public class ActivityManager extends Manager {
                         activityDoc.getDouble("price"),
                         activityDoc.getString("currency"),
                         activityDoc.getString("publishStatus"),
-                        activityDoc.getString("avgRating")
+                        activityDoc.getString("avgRating"),
+                        activityDoc.getString("updateUser")
                 );
                 activityList.add(activity);
             }
@@ -180,7 +219,8 @@ public class ActivityManager extends Manager {
                         activityDoc.getDouble("price"),
                         activityDoc.getString("currency"),
                         activityDoc.getString("publishStatus"),
-                        activityDoc.getString("avgRating")
+                        activityDoc.getString("avgRating"),
+                        activityDoc.getString("updateUser")
                 );
                 activityList.add(activity);
             }
@@ -208,7 +248,8 @@ public class ActivityManager extends Manager {
                             activityDoc.getDouble("price"),
                             activityDoc.getString("currency"),
                             activityDoc.getString("publishStatus"),
-                            activityDoc.getString("avgRating")
+                            activityDoc.getString("avgRating"),
+                            activityDoc.getString("updateUser")
                     );
                     activityList.add(activity);
                 }
@@ -219,8 +260,13 @@ public class ActivityManager extends Manager {
         }
     }
 
-    public void updateActivity( Activity activity) throws AppException {
+    public void updateActivity( @Context HttpHeaders headers,Activity activity) throws AppException {
         try {
+
+            Session session = SessionManager.getInstance().getSessionForToken(headers);
+          //  ArrayList<User> user = UserManager.getInstance().getUserById(session.getUserId());
+            if(!session.getUserId().equals(activity.getUpdateUser()))
+                throw new AppUnauthorizedException(70,"Invalid user id");
 
             Bson filter = new Document("activityId", new String(activity.getActivityId()));
             Bson newValue = new Document()
@@ -235,7 +281,8 @@ public class ActivityManager extends Manager {
                     .append("price",activity.getPrice())
                     .append("currency",activity.getCurrency())
                     .append("publishStatus",activity.getPublishStatus())
-                    .append("avgRating" , activity.getAvgRating());
+                    .append("avgRating" , activity.getAvgRating())
+                    .append ("updateUser", activity.getUpdateUser());
 
             Bson updateOperationDocument = new Document("$set", newValue);
 

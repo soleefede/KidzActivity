@@ -1,4 +1,5 @@
 package edu.cmu.andrew.karim.server.http.interfaces;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.mongodb.client.MongoCollection;
@@ -7,6 +8,7 @@ import edu.cmu.andrew.karim.server.http.responses.AppResponse;
 import edu.cmu.andrew.karim.server.http.utils.PATCH;
 import edu.cmu.andrew.karim.server.managers.ActivityManager;
 import edu.cmu.andrew.karim.server.models.Activity;
+import edu.cmu.andrew.karim.server.models.Ranking;
 import edu.cmu.andrew.karim.server.utils.AppLogger;
 import org.bson.Document;
 import org.json.JSONObject;
@@ -49,7 +51,8 @@ public class ActivityHttpInterface extends HttpInterface {
                     json.getDouble("price"),
                     json.getString("currency"),
                     json.getString("publishStatus"),
-                    ""
+                    "",
+                    json.getString("updateUser")
                     );
             ActivityManager.getInstance().createActivity( headers, newactivity);
             return new AppResponse("Insert Successful");
@@ -64,15 +67,21 @@ public class ActivityHttpInterface extends HttpInterface {
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public AppResponse getActivity(@Context HttpHeaders headers, @QueryParam("sortby") String sortby, @QueryParam("offset") Integer offset,
-                                   @QueryParam("count") Integer count,@QueryParam("category") String activityCategory ){
+                                   @QueryParam("count") Integer count,@QueryParam("category") String activityCategory ,
+                                   @QueryParam("location") String location ){
         try{
             AppLogger.info("Got an API call");
             ArrayList<Activity> activities = null;
+            ArrayList<Ranking> rankedActivities = null;
 
            if(sortby != null)
                 activities = ActivityManager.getInstance().getActivityListSorted(sortby);
              else if (activityCategory != null)
                activities = ActivityManager.getInstance().getActivityListFiltered(activityCategory);
+             else if (location != null) {
+               System.out.println("Location: " + location);
+               rankedActivities = ActivityManager.getInstance().getActivityListByDistance(location);
+           }
              else if(offset != null && count != null)
                 activities = ActivityManager.getInstance().getActivityListPaginated(offset, count);
             else
@@ -80,6 +89,8 @@ public class ActivityHttpInterface extends HttpInterface {
 
             if( activities  != null)
                 return new AppResponse( activities );
+            else if (rankedActivities!= null)
+                return new AppResponse( rankedActivities );
             else
                 throw new HttpBadRequestException(0, "Problem with getting  activities ");
         }catch (Exception e){
@@ -111,7 +122,7 @@ public class ActivityHttpInterface extends HttpInterface {
     @Path("/{activityId}")
     @Consumes({ MediaType.APPLICATION_JSON})
     @Produces({ MediaType.APPLICATION_JSON})
-    public AppResponse patchActivity(Object request, @PathParam("activityId") String activityId){
+    public AppResponse patchActivity(@Context HttpHeaders headers,Object request, @PathParam("activityId") String activityId){
 
         JSONObject json = null;
 
@@ -129,10 +140,11 @@ public class ActivityHttpInterface extends HttpInterface {
                     json.getDouble("price"),
                     json.getString("currency"),
                     json.getString("publishStatus"),
-                    json.getString("avgrating")
+                    json.getString("avgrating"),
+                    json.getString("updateUser")
             );
 
-            ActivityManager.getInstance().updateActivity(activity);
+            ActivityManager.getInstance().updateActivity(headers,activity);
 
         }catch (Exception e){
             throw handleException("PATCH activity/{activityId}", e);

@@ -11,6 +11,8 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class PaymentManager extends Manager {
     public static PaymentManager _self;
     private MongoCollection<Document> paymentCollection;
@@ -41,8 +43,17 @@ public class PaymentManager extends Manager {
                     .append("paymentStatus", payment.getPaymentStatus());
 
 
-            if (newDoc != null)
+            if (newDoc != null) {
                 paymentCollection.insertOne(newDoc);
+                //String product, String subtotal, String shipping, String tax, String total
+                float shipping = (float) 5.0;
+                float tax = (float) 10.0;
+                float total = payment.getTotalPrice() + shipping + tax;
+                String payPalLink = PayPalPaymentManager.getInstance().processPayment(payment.getPaymentId(), Float.toString(payment.getTotalPrice()),Float.toString(shipping) ,Float.toString(tax),Float.toString(total));
+                System.out.println(payPalLink);
+                if (payPalLink != null)
+                    updatePayment(payment.getPaymentId(),payPalLink,"Paid");
+            }
             else
                 throw new AppInternalServerException(0, "Failed to create new payment");
 
@@ -50,6 +61,30 @@ public class PaymentManager extends Manager {
             throw handleException("Create Payment", e);
         }
 
+    }
+
+    public ArrayList<Payment> getPayments(String paymentId) throws AppException {
+        try{
+            ArrayList<Payment> paymentList = new ArrayList<>();
+            FindIterable<Document> paymentDocs = paymentCollection.find().filter(Filters.eq("paymentId",paymentId));
+
+            // FindIterable<Document> bookingDocs = bookingCollection.find();
+            for(Document paymentDoc: paymentDocs) {
+
+                Payment payment = new Payment(
+                        paymentDoc.getString("paymentId").toString(),
+                        paymentDoc.getInteger("noOfSeats"),
+                        0,
+                        0,
+                        paymentDoc.getString("paymentIdExternal"),
+                        paymentDoc.getString("paymentStatus")
+                );
+                paymentList.add(payment);
+            }
+            return new ArrayList<>(paymentList);
+        } catch(Exception e){
+            throw handleException("Get Payment List", e);
+        }
     }
 
     public void updatePayment( String paymentId, String paymentIdExternal , String paymentStatus) throws AppException {
@@ -65,8 +100,8 @@ public class PaymentManager extends Manager {
                         .append("noOfSeats", paymentDoc.getInteger("noOfSeats"))
                         .append("activityPrice", paymentDoc.getDouble("activityPrice"))
                         .append("totalPrice", paymentDoc.getDouble("totalPrice"))
-                        .append("paymentIdExternal", paymentDoc.getString("paymentIdExternal"))
-                        .append("paymentStatus", paymentDoc.getString("paymentStatus"));
+                        .append("paymentIdExternal", paymentIdExternal)
+                        .append("paymentStatus", paymentStatus);
 
 
 
@@ -83,5 +118,5 @@ public class PaymentManager extends Manager {
         }
     }
 
-}
+}//end
 

@@ -38,6 +38,7 @@ public class BookingManager extends Manager {
 
             Document newDoc = new Document()
                     .append("bookingId", booking.getBookingId())
+                    .append("bookingDate", booking.getBookingDate())
                     .append("parentId", booking.getParentId())
                     .append("activityId", booking.getActivityId())
                     .append("availabilityId", booking.getAvailabilityId())
@@ -74,6 +75,7 @@ public class BookingManager extends Manager {
             for(Document bookingDoc: bookingDocs) {
                 Booking booking = new Booking(
                         bookingDoc.getString("bookingId").toString(),
+                        bookingDoc.getString("bookingDate"),
                         bookingDoc.getString("parentId").toString(),
                         bookingDoc.getString("activityId"),
                         bookingDoc.getString("availabilityId"),
@@ -90,6 +92,63 @@ public class BookingManager extends Manager {
             throw handleException("Get Booking List", e);
         }
     }
+
+    public ArrayList<Booking> getBookingActivity(String activityId) throws AppException {
+        try{
+            ArrayList<Booking> bookingList = new ArrayList<>();
+            FindIterable<Document> bookingDocs = bookingCollection.find().filter(Filters.eq("activityId",activityId));
+
+           // FindIterable<Document> bookingDocs = bookingCollection.find();
+            for(Document bookingDoc: bookingDocs) {
+                Booking booking = new Booking(
+                        bookingDoc.getString("bookingId").toString(),
+                        bookingDoc.getString("bookingDate"),
+                        bookingDoc.getString("parentId").toString(),
+                        bookingDoc.getString("activityId"),
+                        bookingDoc.getString("availabilityId"),
+                        bookingDoc.getString("paymentId"),
+                        bookingDoc.getInteger("noOfSeats"),
+                        bookingDoc.getString("kidName"),
+                        bookingDoc.getString("bookingStatus"),
+                        bookingDoc.getString("confirmStatus")
+                );
+                bookingList.add(booking);
+            }
+            return new ArrayList<>(bookingList);
+        } catch(Exception e){
+            throw handleException("Get Booking List", e);
+        }
+    }
+
+
+    public ArrayList<Booking> getBookingById(String bookingId) throws AppException {
+        try{
+            ArrayList<Booking> bookingList = new ArrayList<>();
+            FindIterable<Document> bookingDocs = bookingCollection.find().filter(Filters.eq("bookingId",bookingId));
+
+            // FindIterable<Document> bookingDocs = bookingCollection.find();
+            for(Document bookingDoc: bookingDocs) {
+                Booking booking = new Booking(
+                        bookingDoc.getString("bookingId").toString(),
+                        bookingDoc.getString("bookingDate"),
+                        bookingDoc.getString("parentId").toString(),
+                        bookingDoc.getString("activityId"),
+                        bookingDoc.getString("availabilityId"),
+                        bookingDoc.getString("paymentId"),
+                        bookingDoc.getInteger("noOfSeats"),
+                        bookingDoc.getString("kidName"),
+                        bookingDoc.getString("bookingStatus"),
+                        bookingDoc.getString("confirmStatus")
+                );
+                bookingList.add(booking);
+            }
+            return new ArrayList<>(bookingList);
+        } catch(Exception e){
+            throw handleException("Get Booking List", e);
+        }
+    }
+
+
 
     public void updateBooking(String bookingId, String paymentId, String bookingStatus, String confirmStatus) throws AppException {
         try {

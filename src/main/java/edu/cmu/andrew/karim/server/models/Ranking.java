@@ -1,6 +1,13 @@
 package edu.cmu.andrew.karim.server.models;
 
-public class Ranking {
+import edu.cmu.andrew.karim.server.managers.RankingManager;
+import org.glassfish.hk2.api.Rank;
+
+import javax.swing.text.Document;
+import java.util.ArrayList;
+import java.util.Comparator;
+
+public class Ranking implements Comparable<Ranking>{
 
     String activityId;
     String activityName;
@@ -13,9 +20,12 @@ public class Ranking {
     double price;
     String currency;
     String publishStatus;
-    //String avgRating;
+//    int distance;
+    String distance;
+    String avgRating;
 
-    public Ranking(String activityId, String activityName, String activityProviderId, String effectiveDate, String endDate, String activityCategory, String description, String photo, double price, String currency, String publishStatus) {
+    public Ranking(String activityId, String activityName, String activityProviderId, String effectiveDate, String endDate, String activityCategory, String description, String photo, double price, String currency, String publishStatus, String distance, String avgRating) {
+        super();
         this.activityId = activityId;
         this.activityName = activityName;
         this.activityProviderId = activityProviderId;
@@ -27,10 +37,11 @@ public class Ranking {
         this.price = price;
         this.currency = currency;
         this.publishStatus = publishStatus;
-        //this.avgRating = avgRating;
+        this.distance = distance;
+        this.avgRating = avgRating;
     }
 
-//    public String getAvgRating() {
+    //    public String getAvgRating() {
 //        return avgRating;
 //    }
 //
@@ -124,5 +135,35 @@ public class Ranking {
 
     public void setPublishStatus(String publishStatus) {
         this.publishStatus = publishStatus;
+    }
+
+//    public int getDistance() {
+//        return distance;
+//    }
+//
+//    public void setDistance(int distance) {
+//        this.distance = distance;
+//    }
+
+    public String getAvgRating() {
+        return avgRating;
+    }
+
+    public void setAvgRating(String avgRating) {
+        this.avgRating = avgRating;
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+
+
+    @Override
+  public int compareTo(Ranking ranking) {
+        return Math.round(Integer.parseInt(this.getDistance()))- Math.round(Integer.parseInt(ranking.getDistance()));
     }
 }

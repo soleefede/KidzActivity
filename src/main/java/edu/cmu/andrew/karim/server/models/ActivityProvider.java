@@ -18,8 +18,9 @@ public class ActivityProvider {
     String bankName = null;
     String bankAccNumber = null;
     String pinCode = null;
+    String updateUser = null;
 
-    public ActivityProvider(String id, String activityProviderId, String businessName, String entityName, String einNumber, String ssn, String address1, String address2, String city, String state, String phoneNumber, String email, String commissionPercentage, String bankName, String bankAccNumber, String pinCode) {
+    public ActivityProvider(String id, String activityProviderId, String businessName, String entityName, String einNumber, String ssn, String address1, String address2, String city, String state, String phoneNumber, String email, String commissionPercentage, String bankName, String bankAccNumber, String pinCode, String updateUser) {
         this.id = id;
         this.activityProviderId = activityProviderId;
         this.businessName = businessName;
@@ -36,6 +37,15 @@ public class ActivityProvider {
         this.bankName = bankName;
         this.bankAccNumber = bankAccNumber;
         this.pinCode = pinCode;
+        this.updateUser = updateUser;
+    }
+
+    public String getUpdateUser() {
+        return updateUser;
+    }
+
+    public void setUpdateUser(String updateUser) {
+        this.updateUser = updateUser;
     }
 
     public String getId() {
